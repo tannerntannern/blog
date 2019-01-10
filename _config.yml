@@ -80,5 +80,5 @@ theme: minos
 deploy:
   type: git
   repo: https://github.com/tannerntannern/blog.git
-  branch: published
+  branch: gh-pages
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
