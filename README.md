@@ -3,4 +3,4 @@ This readme really only exists to save future me from my own forgetfulness.  Run
 
 ## Publishing
 1. Commit changes to `master`
-2. Run `hexo deploy`
+2. Run `hexo deploy -g`
