@@ -2,6 +2,6 @@
 title: Hello World
 ---
 
-Welcome to my blog!  Somehow you found this site before you were supposed to, so there's nothing here for you to see...  Run along for now.
+Welcome to my blog!  There is not much here yet, but there will be eventually.  Come back later for more.
 
-Visit my main website: [tannernielsen.com](http://tannernielsen.com)
+Visit my main website here: [tannernielsen.com](http://tannernielsen.com)
