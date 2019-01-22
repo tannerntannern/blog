@@ -13,7 +13,7 @@ I love the look of gold-engraved leather.  You see it all the time on portfolios
 
 <!-- more -->
 
-Traditionally, if you wanted to include something like the above image on your website, you'd be forced to create an image with Photoshop or other external software, then include the image in the HMTL.  If you ever want to change the text, resize, or use a different font, you would have to create it all again.  It's even worse if you're site is mobile-friendly (practically a requirement these days) because you need to keep track of multiple sizes and layouts...  Not worth the hassle unless you _really_ need the effect.
+Traditionally, if you wanted to include something like the above image on your website, you'd be forced to create it with Photoshop or other external software, then include the image in the HMTL.  If you ever want to change the text, resize, or use a different font, you would have to create it all again.  It's even worse if your site is mobile-friendly (practically a requirement these days) because you need to keep track of multiple sizes and layouts...  Not worth the hassle unless you _really_ need the effect.
 
 BUT FEAR NOT!  With a just few CSS tricks and clever texturing, you can mimic this lovely style yourself! AND, it's super flexible:
 
