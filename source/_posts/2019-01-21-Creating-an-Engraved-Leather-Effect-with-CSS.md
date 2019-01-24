@@ -9,7 +9,7 @@ tags:
 
 <link rel="stylesheet" href="/assets/extra.css">
 
-{% asset_img "asdf.jpg" "TODO: place final result here" %}
+{% asset_img "enticer.png" %}
 
 I love the look of gold-engraved leather.  You see it all the time on portfolios, diplomas, etc., and I think the reason is because it really does have a universal appeal.  However, you don't see it so often on the web.  Perhaps it just doesn't fit with the flat style that dominates the internet.  Or maybe (most likely) it's because the effect cannot easily be pulled off in CSS.
 
@@ -23,7 +23,7 @@ So what can a poor developer do?  Luckily, with a few CSS tricks and clever text
 * It work with _any_ font (including [Font Awesome](https://fontawesome.com/), or a similar font-based icon system <i class="fas fa-thumbs-up"></i>)
 * Both the text and font can change on the fly without messing up the effect
 
-Today, I will walk you through my process so you can create the effect on your own, and I'll even give away the special Blender-made textures at the end of the article.  It's a bumpy road ahead, but surely you will find the journey worth it, because the effect is so beautiful!
+Today, I will walk you through my process so you can create the effect on your own, and I'll even give away the special Blender-made textures at the end of the article.  It's a bumpy road ahead, but hopefully you find something useful along the way.
 
 ## Breaking it down: How does it work?	
 Before we can get to work, we need to briefly break down how the effect is pulled off.  There are several key pieces to note:
