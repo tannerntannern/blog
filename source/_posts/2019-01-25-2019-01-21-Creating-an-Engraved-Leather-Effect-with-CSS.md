@@ -1,11 +1,12 @@
 ---
 title: Creating an Engraved Leather Effect with CSS
-disqusId: '2019-01-22 00:27:51-Creating an Engraved Leather Effect with CSS'
-date: 2019-01-25 18:27:51
+disqusId: '2019-01-26 00:27:51-"Creating an Engraved Leather Effect with CSS"'
 tags:
-	- css
-	- tutorial
+  - css
+  - tutorial
+date: 2019-01-25 18:27:51
 ---
+
 
 <link rel="stylesheet" href="/assets/extra.css">
 
