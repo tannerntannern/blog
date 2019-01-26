@@ -6,7 +6,7 @@
     "version": "3.8.0"
   },
   "scripts": {
-    "dev": "opn http://localhost:4000 && hexo server",
+    "dev": "opn http://localhost:4000 && hexo server --draft",
     "deploy": "hexo deploy -g"
   },
   "dependencies": {

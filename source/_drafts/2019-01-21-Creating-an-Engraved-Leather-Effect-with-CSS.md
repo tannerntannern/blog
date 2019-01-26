@@ -1,7 +1,7 @@
 ---
 title: Creating an Engraved Leather Effect with CSS
 disqusId: '2019-01-22 00:27:51-Creating an Engraved Leather Effect with CSS'
-date: 2019-01-21 18:27:51
+date: 2019-01-25 18:27:51
 tags:
 	- css
 	- tutorial
@@ -185,3 +185,4 @@ Once you are happy with how it looks, you can hit the big render button and go g
 ![Baked gold texture](gold-texture-bake.png)
 
 ## Step 2 - Adding the Textures to HTML
+Now we are finally done with Blender (thank goodness!), and we have two images: a leather image, and a gold image with texturing that matches the leather.
