@@ -297,7 +297,7 @@ Here the background-image stuff is the same as before, only now we get our text 
 
 And that's it!  You can check out the results in this Fiddle:
 
-<script async src="//jsfiddle.net/tannerntannern/3xr8mLf6/204/embed/html,css,result/"></script>
+<script async src="//jsfiddle.net/tannerntannern/3xr8mLf6/embed/html,css,result/"></script>
 
 ## Conclusion
 There you have it!  Hopefully this article was insightful, and perhaps you can build upon these techniques to do other effects as well.
