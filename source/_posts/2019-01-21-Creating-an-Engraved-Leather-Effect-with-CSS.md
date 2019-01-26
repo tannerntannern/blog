@@ -38,7 +38,7 @@ I will walk through these effects in the above order, starting with the normal m
 If you don't know what a normal map is, <a href="https://www.youtube.com/results?search_query=normal+maps+explained">a YouTube search</a> can probably answer most of your questions.  All you really need to know is that they help 3D software render lighting for geometrically complex surfaces.
 {% endcolorquote %}
 
-## Step 1. Creating the Textures
+## Step 1 - Creating the Textures
 Our first goal is to create leather and gold textures that looks a bit like this:
 
 ![Textured gold letters reference](reference2.jpg)
@@ -46,7 +46,7 @@ Our first goal is to create leather and gold textures that looks a bit like this
 We will not be creating the actual letters in this step, but notice how the gold is clearly "painted" on to the existing bumps and crevices.  We will be using [Blender](https://www.blender.org/) achieve this effect.
 
 {% colorquote info %}
-I should also note that this does not need to be gold if you want to go for a different look.  You could also do black ink on brown leather, for example, and the steps should be pretty much the same.
+If you do not want to go through the hassle of creating your own textures, you can skip sections 1.1 - 1.7, as I will be giving away my textures at the end of the article.  However, if you wanted to go for a slightly different effect, such black text on brown leather, or even red paint on concrete, these steps will be very helpful for you.
 {% endcolorquote %}
 
 ### Step 1.1 - Get Blender
@@ -137,3 +137,51 @@ Finally, with the orphan image texture node selected (it _must be selected_ or y
 After that's complete, you should see the rendered result in UV/Image Editor view.  To save the image, click "Image" at the bottom and select "Save as Image".  You should now have an image file that looks something like this:
 
 ![Baked leather texture result](leather-texture-bake.png)
+
+### Step 1.6 - Setup the Gold Material
+Now we need to create a gold material that has the same normal mapping as the leather, which will make it look as though the gold has been painted on top of the leather.  Luckily, we can leverage the work we just did so we don't have to do it all again.
+
+First, change the left-hand view back to 3D view and turn on live rendering (<kbd>shift</kbd> + <kbd>z</kbd>) so we can see the material as it changes.  Next, we need to find a gold texture somewhere online, and preferably a seamless one.  Unlike the leather, we won't need any normal maps or specular maps, because we will just be using the ones from the leather.
+
+Metallic textures can be tricky because we don't want a texture that already has the reflections built in; Blender will calculate the reflections based on the leather normals.  Try to find a relatively flat texture, perhaps like this one:
+
+![Example gold base texture](gold-base.jpg)
+
+Now let's load the gold texture into blender.  First, we need to duplicate the leather texture since the gold texture will be very similar.  Over on the right-hand side of the screen, go to the Material tab, and click the plus button to create a new material, and the node setup from the old material will automatically be copied.  Now back up on the image texture node that's plugged into the base color, swap out the leather image with the gold one you just downloaded.  If all goes well, you should see something like this:
+
+![Gold base texture swapped in](blender11.png)
+
+Now we begin a game of tweaking:  First, slide the "Metallic" slider on the Principled BSDF shader all the way up.  (It is metal, after all!)  You can also make it look more metallic by decreasing the roughness (0.4 looked good in my particular case).  Things are looking a little dark a little dark for me, so let's crank up the sun a bit.  To do this, select the sun lamp in the scene hierarchy on the right-hand side, select the data tab, then scroll down and click the "Use Nodes" button.
+
+![Enable nodes for sun lamp](blender12.png)
+
+After doing so, you will have a strength parameter that you can now increase.  There's no magic number; just make it as bright as you'd like.  Unfortunately, there are several parameters without magic numbers: the sun strength, the roughness, and the normal map strength, which can be found on the Normal Map node in the node editor.  I went through several iterations to get things right, but in general, you will probably want a low normal strength (because the painted gold would "smooth" the crevices slightly) and you don't want the gold to be too bright (which is influenced by all three factors), or it will look odd in contrast to the leather.  Trial and error is the only way:
+
+![Gold progression](tweaking-the-gold.png)
+
+Even though the last iteration looks a little dull, it ended up looking the best when I used it for gold text, so keep that in mind when choosing your parameters.
+
+### Step 1.7 - Render the Gold to a Texture
+One complication we have to deal with now is that due to the nature of Cycles baking, reflections and such can't be baked directly to textures, because the reflections depend on viewing angle.  So instead of baking the gold texture, we will setup an overhead camera and use that to render the texture.
+
+Assuming you're happy with the gold material, you can turn off live rendering (<kbd>shift</kbd> + <kbd>z</kbd>) and go back to one view:
+
+![Closing the view](blender13.gif)
+
+Next, (<kbd>shift</kbd> + <kbd>a</kbd>) and create a camera.  Open the properties panel (<kbd>n</kbd>) and with the camera selected, set the position to (0, 0, 10), and the rotation to (0, 0, 0), so our camera points straight down at the plane.
+
+Now over on the right-hand side of the screen, click the camera tab, change the camera to orthographic, and set the orthographic scale to 10.  (Since we are rendering to a texture, we don't want perspective to skew anything.)
+
+![Camera setup progress](blender14.png)
+
+Finally, to get the aspect ratio correct, head over to the Render tab and adjust the resolution to match the size of the leather texture we created earlier:
+
+![Aspect ratio](blender15.png)
+
+If you want to get a rough idea of what the final render will look like, hit <kbd>0</kbd> on the numpad to snap the viewport to the camera's perspective, and hit <kbd>shift</kbd> + <kbd>z</kbd> to preview the render.  You may find that at this angle, you will have to re-adjust the gold material parameters from before.  Be sure to adjust based on this view because this is the one that will be rendered!
+
+Once you are happy with how it looks, you can hit the big render button and go grab a coffee or something -- it will take awhile.  Once it's done, you can save the image to a file like we did with the leather texture (and don't forget to save! Blender will not save the render if you close out).  If all goes well, you should have a leather texture that looks a bit like this:
+
+![Baked gold texture](gold-texture-bake.png)
+
+## Step 2 - Adding the Textures to HTML
