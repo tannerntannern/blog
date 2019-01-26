@@ -233,24 +233,18 @@ This simply ensures that both textures will be the same size and align with each
 ![Aligning the textures](css2.png)
 
 ## Step 3 - Pressing the Gold Text
-Lastly, we need to add some special text shadows to give the illusion that the text has really been pressed into the leather, and that it's not just a gold sticker loosely sitting on top.  The following picture illustrates what the shadows are trying to do:
+Lastly, we need to add some special text shadows to give the illusion that the text has been "pressed" into the leather and not just a gold sticker on top of the leather.  The following picture illustrates how we can use shadow to create this illusion:
 
 ![Shadow explanation](shadow-explanation.png)
 
-Here we have a shape pressed into a surface with the light coming from the upper left, similar to our textures.  You will notice that the upper and left edges are darker because they are obstructed from the light source, and the bottom and right edges are lighter because they are angled more directly towards the light.  Using two text shadows, we can do the same thing.  It takes some tweaking, but something like this works fairly well:
+Here we have a shape pressed into a surface with the light coming from the upper left, just like our textures.  You will notice that the upper and left edges are darker because they are obstructed from the light source, and the bottom and right edges are brighter because they are angled more directly towards the light.  Using two text shadows, we can do the same thing.  It takes some tweaking, but something like this works fairly well:
 ```css
 .gold {
-  text-shadow: -3px -2px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
+  text-shadow: -3px -3px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
 }
 ```
 
-...but according to the [MDN docs for `background-clip`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip#Browser_compatibility), several browsers won't render text-shadows properly when `background-clip: text` is used on the same element.  This can be a pain in the butt because now we need one element for shadows and another for the gold.  One option to make this less of a pain in the butt is to use pseudo elements that read from a common attribute.  Let's revise our markup:
-
---------------------------------
-
-TODO: Pseudo elements are too buggy
-
---------------------------------
+...but according to the [MDN docs for `background-clip`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip#Browser_compatibility), several browsers won't render text-shadows properly when `background-clip: text` is used on the same element.  This can be a pain in the butt because the only way to get around this is to put the shadows on a separate element.  One option to make this less cumbersome is to use the `::before` and `::after` pseudo elements, and have them read from a common attribute.  It's easier to understand in code, so let's revise our markup:
 
 ```html
 <div class="leather textured">
@@ -258,21 +252,38 @@ TODO: Pseudo elements are too buggy
 </div>
 ```
 
-Some of our CSS can stay the same, but the `gold` class needs to be reworked:
+Notice that the text is now entirely within an attribute.  This allows us to access the text via the [`attr()` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/attr) to automatically duplicate the text across our two pseudo elements (one for the gold, and one for the shadow).
+
+Now let's revise the `gold` class.  This gets a little hairy, so I will break down each part:
+
 ```css
 .gold {
+  position: relative;
   font-size: 70pt;
 }
+```
 
-.gold::after {
-  content: attr(data-text);
-  
-  text-shadow: -3px -2px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
-}
+The actual `.gold` element now just serves as an anchor for our `::before` and `::after` elements.  Since there will be absolute positioning involved with the pseudo elements, we need to set `position: relative` here.
 
+The `::before` element will serve as our shadow element, since it needs to sit behind the gold:
+
+```css
 .gold::before {
   content: attr(data-text);
+  text-shadow: -3px -3px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
+}
+```
+
+Here is where the magic `attr()` function comes into play.  By loading the `data-text` value into the `content` property, we have effectively inserted the text into the element, as if it were `<h1>Gold Engraving</h1>`.  Since this element isn't using `background-clip: text`, we are free to add our shadows here.
+
+The `::after` element will serve as the gold text element:
+
+```css
+.gold::after {
+  content: attr(data-text);
   position: absolute;
+  left: 0;
+  top: 0;
   
   background-image: url(gold-texture.png);
   background-clip: text;
@@ -280,3 +291,14 @@ Some of our CSS can stay the same, but the `gold` class needs to be reworked:
   color: transparent;
 }
 ```
+
+Here the background-image stuff is the same as before, only now we get our text content from `attr(data-text)`, just like `::before`.  Then, to get the gold to sit directly on top of the shadow, we use absolute positioning.
+
+And that's it!  You can check out the results in this Fiddle:
+
+<script async src="//jsfiddle.net/tannerntannern/3xr8mLf6/204/embed/html,css,result/"></script>
+
+## Conclusion
+There you have it!  Hopefully this article was insightful, and perhaps you can build upon these techniques to do other effects as well.
+
+As promised, here are the <a href="leather-texture-bake.png" target="_blank">leather</a> and <a href="gold-texture-bake.png" target="_blank">gold</a> textures for your convenience.  Feel free to use them however you'd like. 😃
