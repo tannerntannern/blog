@@ -185,4 +185,98 @@ Once you are happy with how it looks, you can hit the big render button and go g
 ![Baked gold texture](gold-texture-bake.png)
 
 ## Step 2 - Adding the Textures to HTML
-Now we are finally done with Blender (thank goodness!), and we have two images: a leather image, and a gold image with texturing that matches the leather.
+Now we are finally done with Blender (thank goodness!), and we have two images: a leather image, and a gold image with texturing that matches the leather.  Using these two images, we can make it look like the gold is painted on the leather.
+
+Let's start with some basic markup:
+```html
+<div class="leather textured">
+  <h1 class="gold textured">Gold Engraving</h1>
+</div>
+```
+
+That's all the markup we'll need for now.  Let's take a look at the CSS, starting with the `leather` class:
+```css
+.leather {
+  background-image: url(leather-texture.png);
+  padding: 1em;
+}
+```
+
+This simply sets the background to the leather texture we created and gives us a little extra padding.  Easy so far.  Now let's look at the `gold` class:
+```css
+.gold {
+  background-image: url(gold-texture.png);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  
+  font-size: 70pt;
+}
+```
+
+Here, we set the `background-image` to our gold texture, but we set the `background-clip` property to `text` (along with the -webkit prefixed version).  This clips the background so it only displays in the bounds of the text.  However, the text would cover it up by default, so we set `color: transparent` to hide the actual text.
+
+With that, we get something that looks like this:
+
+![Initial CSS](css1.png)
+
+Not quite what we're looking for... The textures don't line up with each other and the leather is much too big.  So, let's fill in the third class I alluded to in the markup:
+```css
+.textured {
+  background-position: fixed;
+  background-size: 900px 900px;
+}
+```
+
+This simply ensures that both textures will be the same size and align with each other.  It's difficult to see since the gold texturing is so subtle, so here's a version with an exaggerated gold texture so you can see that it really does line up:
+
+![Aligning the textures](css2.png)
+
+## Step 3 - Pressing the Gold Text
+Lastly, we need to add some special text shadows to give the illusion that the text has really been pressed into the leather, and that it's not just a gold sticker loosely sitting on top.  The following picture illustrates what the shadows are trying to do:
+
+![Shadow explanation](shadow-explanation.png)
+
+Here we have a shape pressed into a surface with the light coming from the upper left, similar to our textures.  You will notice that the upper and left edges are darker because they are obstructed from the light source, and the bottom and right edges are lighter because they are angled more directly towards the light.  Using two text shadows, we can do the same thing.  It takes some tweaking, but something like this works fairly well:
+```css
+.gold {
+  text-shadow: -3px -2px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
+}
+```
+
+...but according to the [MDN docs for `background-clip`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip#Browser_compatibility), several browsers won't render text-shadows properly when `background-clip: text` is used on the same element.  This can be a pain in the butt because now we need one element for shadows and another for the gold.  One option to make this less of a pain in the butt is to use pseudo elements that read from a common attribute.  Let's revise our markup:
+
+--------------------------------
+
+TODO: Pseudo elements are too buggy
+
+--------------------------------
+
+```html
+<div class="leather textured">
+  <h1 class="gold textured" data-text="Gold Engraving"></h1>
+</div>
+```
+
+Some of our CSS can stay the same, but the `gold` class needs to be reworked:
+```css
+.gold {
+  font-size: 70pt;
+}
+
+.gold::after {
+  content: attr(data-text);
+  
+  text-shadow: -3px -2px 5px rgba(0,0,0,.8), 1px 1px 2px rgba(255,255,255,.45);
+}
+
+.gold::before {
+  content: attr(data-text);
+  position: absolute;
+  
+  background-image: url(gold-texture.png);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+```
