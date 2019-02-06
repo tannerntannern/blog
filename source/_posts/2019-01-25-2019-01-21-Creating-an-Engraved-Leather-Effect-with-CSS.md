@@ -286,6 +286,8 @@ The `::after` element will serve as the gold text element:
   left: 0;
   top: 0;
   
+  background-position: inherit;
+  background-size: inherit;
   background-image: url(gold-texture.png);
   background-clip: text;
   -webkit-background-clip: text;
