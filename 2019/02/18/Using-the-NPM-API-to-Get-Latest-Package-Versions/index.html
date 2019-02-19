@@ -2,7 +2,7 @@
 <html class="has-navbar-fixed-top">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Tanner&#39;s Blog</title>
+<title>Using the NPM API to Get Latest Package Versions - Tanner&#39;s Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
@@ -16,17 +16,22 @@
 
 
 
-    <meta name="description" content="A humble blog about programming, and sometimes music.">
-<meta name="keywords" content="programming,blog,music,tanner,nielsen,tannerntannern">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tanner&#39;s Blog">
-<meta property="og:url" content="http://blog.tannernielsen.com/index.html">
+    <meta name="description" content="For the lazy folks: I don’t want a story, just give me the code. I wanted to write a very quick article/rant because I was frustrated with what I found when trying to programmatically get the lates">
+<meta name="keywords" content="javascript,npm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using the NPM API to Get Latest Package Versions">
+<meta property="og:url" content="http://blog.tannernielsen.com/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/index.html">
 <meta property="og:site_name" content="Tanner&#39;s Blog">
-<meta property="og:description" content="A humble blog about programming, and sometimes music.">
+<meta property="og:description" content="For the lazy folks: I don’t want a story, just give me the code. I wanted to write a very quick article/rant because I was frustrated with what I found when trying to programmatically get the lates">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/promo.jpg">
+<meta property="og:image" content="https://badgen.net/badge/build/passing/green">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/bundle-size.png">
+<meta property="og:updated_time" content="2019-02-19T00:25:18.397Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tanner&#39;s Blog">
-<meta name="twitter:description" content="A humble blog about programming, and sometimes music.">
+<meta name="twitter:title" content="Using the NPM API to Get Latest Package Versions">
+<meta name="twitter:description" content="For the lazy folks: I don’t want a story, just give me the code. I wanted to write a very quick article/rant because I was frustrated with what I found when trying to programmatically get the lates">
+<meta name="twitter:image" content="http://blog.tannernielsen.com/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/promo.jpg">
 
 
 
@@ -118,11 +123,10 @@
 
     <section class="section">
     <div class="container">
-    
-        <article class="article content gallery" itemscope="" itemprop="blogPost">
+    <article class="article content gallery" itemscope="" itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/" itemprop="url">Using the NPM API to Get Latest Package Versions</a>
+            Using the NPM API to Get Latest Package Versions
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -145,93 +149,76 @@
 <img src="/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/promo.jpg">
 <p>For the lazy folks: <a href="#A-Better-Solution">I don’t want a story, just give me the code.</a></p>
 <p>I wanted to write a very quick article/rant because I was frustrated with what I found when trying to programmatically get the latest version of an npm pacakge.  A very popular solution is the <a href="https://www.npmjs.com/package/latest-version" target="_blank" rel="noopener">latest-version</a> package on npm, which has nearly <a href="https://www.npmtrends.com/latest-version" target="_blank" rel="noopener">3 million weekly downloads</a>.  Upon initial inspection it sure looks super, but is it really?</p>
-        <p class="article-more-link">
-            <a href="/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/#more">Read More</a>
-        </p>
+<a id="more"></a>
+<p>The package sports a shiny <img src="https://badgen.net/badge/build/passing/green" alt="build passing"> badge (so you know it’s good), and even tells you why you should choose this package over the <a href="https://www.npmjs.com/package/latest" target="_blank" rel="noopener">latest</a> package, which has “massive” dependencies.  The code example also looks pretty slick:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> latestVersion(<span class="hljs-string">'ava'</span>));</span><br><span class="line"><span class="hljs-comment">//=&gt; '0.18.0'</span></span><br></pre></td></tr></table></figure>
+<p>So at this point I’ve gotten the sense that the package is popular, reliable, more lightweight than the competition, and simple to use.  Sounds great to me!  Let’s just <a href="https://bundlephobia.com/result?p=latest-version" target="_blank" rel="noopener">check the download size</a> before installing…</p>
+<p><img src="bundle-size.png" alt="Bundle Size according to bundlephobia.com"></p>
+<p>Wait a minute… This package literally exposes <em>one</em> function that does <em>one</em> thing.  How on earth could it possibly require nearly 90kB, <em>minified?!</em>  Turns out the culprit is the package’s only (and much more useful) dependency, <a href="https://www.npmjs.com/package/package-json" target="_blank" rel="noopener">package-json</a> (by the same author).  The crime here (in my opinion) is that this dependency is over-qualified and most of its useful functionality is hidden by the dependent package.  <strong>It feels a lot like cracking an egg with a hammer.</strong></p>
+<p>Without stepping too close to the “one-line modules” debate (about which the <a href="https://github.com/sindresorhus/ama/issues/10#issuecomment-117766328" target="_blank" rel="noopener"><code>latest-version</code> author himself has quite a bit to say</a>), this package blatantly disregards bundle size in the name of “simplicity,” and we can do much better.</p>
+<h2 id="A-Better-Solution"><a href="#A-Better-Solution" class="headerlink" title="A Better Solution"></a>A Better Solution</h2><p>The official API provided by the npm registry is more than enough to retrieve the latest package version.  Using the <a href="https://bundlephobia.com/result?p=axios@0.18.0" target="_blank" rel="noopener">much lighter-weight</a> dependency, <a href="https://www.npmjs.com/package/axios" target="_blank" rel="noopener">axios</a>, we can rewrite the entire <code>latest-version</code> module in a handful of lines:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">latestVersion</span>(<span class="hljs-params">packageName</span>) </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> axios</span><br><span class="line">        .get(<span class="hljs-string">'https://registry.npmjs.org/'</span> + packageName + <span class="hljs-string">'/latest'</span>)</span><br><span class="line">        .then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.data.version);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Just like the original package, <code>latestVersion()</code> returns a promise, so you can use it exactly the same as the <code>latest-version</code> docs describe:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> packageVersion = <span class="hljs-keyword">await</span> latestVersion(<span class="hljs-string">'some-package'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>I hope this saved you some unnecessary code bloat.  You don’t have to trust the “lightweight” claims of every package!  Check for yourself at <a href="https://bundlephobia.com" target="_blank" rel="noopener">bundlephobia.com</a>.</p>
+
     
     </div>
     
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/javascript/">#javascript</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/npm/">#npm</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2019/01/25/2019-01-21-Creating-an-Engraved-Leather-Effect-with-CSS/">Creating an Engraved Leather Effect with CSS</a>
+            
+        </span>
+    </div>
     
 </article>
 
 
-
-
+<div class="sharebox">
     
-        <article class="article content gallery" itemscope="" itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+</div>
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.tannernielsen.com/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/';
+        this.page.identifier = '2019-02-18 22:04:25-&#34;Using the NPM API to Get Latest Package Versions&#34;';
         
-            <a href="/2019/01/25/2019-01-21-Creating-an-Engraved-Leather-Effect-with-CSS/" itemprop="url">Creating an Engraved Leather Effect with CSS</a>
+        this.language = 'en';
         
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            <time datetime="2019-01-26T00:27:51.000Z" itemprop="datePublished">Jan 25 2019</time>
-        </span>
-        
-        
-        <span class="column is-narrow">
-            
-            
-            27 minutes read (About 4018 words)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <link rel="stylesheet" href="/assets/extra.css">
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'tannern-blog' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
 
-<img src="/2019/01/25/2019-01-21-Creating-an-Engraved-Leather-Effect-with-CSS/enticer.png">
-<p>I love the look of gold-engraved leather.  You see it all the time on portfolios, diplomas, etc., and I think the reason is because it really does have a universal appeal.  However, you don’t see it so often on the web.  Perhaps it just doesn’t fit with the flat style that dominates the internet.  Or maybe (most likely) it’s because the effect cannot easily be pulled off in CSS.</p>
-        <p class="article-more-link">
-            <a href="/2019/01/25/2019-01-21-Creating-an-Engraved-Leather-Effect-with-CSS/#more">Read More</a>
-        </p>
+<div id="disqus_thread">
     
-    </div>
-    
-    
-</article>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
 
-
-
-
-    
-        <article class="article content gallery" itemscope="" itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/01/20/New-Blog-Introduction/" itemprop="url">New Blog Introduction</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            <time datetime="2019-01-21T03:22:38.000Z" itemprop="datePublished">Jan 20 2019</time>
-        </span>
-        
-        
-        <span class="column is-narrow">
-            
-            
-            a minute read (About 148 words)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <p>Hello to whoever is reading this!  After many years of learning benefiting from the online writing of others, I have finally decided to start my own blog.  I do this both to give back to the community that helped me learn and grow as a software engineer, and to give myself a platform to share my thoughts and experiences.</p>
-        <p class="article-more-link">
-            <a href="/2019/01/20/New-Blog-Introduction/#more">Read More</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-    
     </div>
 </section>
     <footer class="footer">
