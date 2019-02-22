@@ -11,29 +11,27 @@ tags:
 
 {% asset_img "promo.jpg" %}
 
-For the lazy folks: [I don't want a story, just give me the code.](#A-Better-Solution)
-
-I wanted to write a very quick article/rant because I was frustrated with what I found when trying to programmatically get the latest version of an npm pacakge.  A very popular solution is the [latest-version](https://www.npmjs.com/package/latest-version) package on npm, which has nearly [3 million weekly downloads](https://www.npmtrends.com/latest-version).  Upon initial inspection it sure looks super, but is it really?
+The official npm API provides a simple way to programmatically retrieve the latest version of any package, along with other metadata you might find in the `package.json`.  This has a variety of use cases, such as checking when a package is out of date, to name one example.  Today I'll demonstrate how to get the latest version of a package with only a few lines of code.  However, I was frustrated with what I found in other solutions, so I also want to talk about those and why you shouldn't use them.
 
 <!-- more -->
 
-The package sports a shiny ![build passing](https://badgen.net/badge/build/passing/green) badge (so you know it's good), and even tells you why you should choose this package over the [latest](https://www.npmjs.com/package/latest) package, which has "massive" dependencies.  The code example also looks pretty slick:
+A very popular way to get the latest version is through the [latest-version](https://www.npmjs.com/package/latest-version) package on npm, which has nearly [3 million weekly downloads](https://www.npmtrends.com/latest-version).  The package sports a shiny ![build passing](https://badgen.net/badge/build/passing/green) badge (so you know it's good), and the README even tells you why you should choose this package over the [latest](https://www.npmjs.com/package/latest) package, which has "massive" dependencies.  The code example also looks pretty slick:
 
 ```javascript
 console.log(await latestVersion('ava'));
 //=> '0.18.0'
 ```
 
-So at this point I've gotten the sense that the package is popular, reliable, more lightweight than the competition, and simple to use.  Sounds great to me!  Let's just [check the download size](https://bundlephobia.com/result?p=latest-version) before installing...
+So my first impression is that the package is popular, reliable, more lightweight than the competition, and simple to use.  Sounds great to me!  Let's just [check the download size](https://bundlephobia.com/result?p=latest-version) before installing...
 
 ![Bundle Size according to bundlephobia.com](bundle-size.png)
 
-Wait a minute... This package literally exposes _one_ function that does _one_ thing.  How on earth could it possibly require nearly 90kB, _minified?!_  Turns out the culprit is the package's only (and much more useful) dependency, [package-json](https://www.npmjs.com/package/package-json) (by the same author).  The crime here (in my opinion) is that this dependency is over-qualified and most of its useful functionality is hidden by the dependent package.  **It feels a lot like cracking an egg with a hammer.**
+Wait a minute... This package literally exposes _one_ function that does _one_ thing.  How on earth could it possibly require nearly 90kB, _minified?!_  It turns out that the culprit is the package's only (and much more useful) dependency, [package-json](https://www.npmjs.com/package/package-json), which allows you to extract information from any `package.json` file on npm.
 
-Without stepping too close to the "one-line modules" debate (about which the [`latest-version` author himself has quite a bit to say](https://github.com/sindresorhus/ama/issues/10#issuecomment-117766328)), this package blatantly disregards bundle size in the name of "simplicity," and we can do much better.
+The crime here (in my opinion) is that this dependency is over-qualified;  **it feels a lot like cracking an egg with a hammer.**  Moreover, _the hammer itself_ is overkill, as the npm API already provides this information.  We can do better:
 
 ## A Better Solution
-The official API provided by the npm registry is more than enough to retrieve the latest package version.  Using the [much lighter-weight](https://bundlephobia.com/result?p=axios@0.18.0) dependency, [axios](https://www.npmjs.com/package/axios), we can rewrite the entire `latest-version` module in a handful of lines:
+Using the npm API and the [much lighter-weight](https://bundlephobia.com/result?p=axios@0.18.0) dependency, [axios](https://www.npmjs.com/package/axios), we can rewrite the entire `latest-version` module in a handful of lines:
 
 ```javascript
 function latestVersion(packageName) {
@@ -50,4 +48,4 @@ const packageVersion = await latestVersion('some-package');
 ```
 
 ## Conclusion
-I hope this saved you some unnecessary code bloat.  You don't have to trust the "lightweight" claims of every package!  Check for yourself at [bundlephobia.com](https://bundlephobia.com).
+I hope this saved you some unnecessary code bloat.  If you want to see how other packages will affect your bundle size in the future, you can check for yourself at [bundlephobia.com](https://bundlephobia.com).
