@@ -1,5 +1,5 @@
-# blog.tannernielsen.com
-This readme really only exists to save future me from my own forgetfulness.  Run along now.
+# [blog.tannernielsen.com](https://blog.tannernielsen.com)
+This readme really only exists to save future me from my own forgetfulness.  Nothing to see here.
 
 ```
 # To deploy:
