@@ -7,4 +7,7 @@ yarn deploy
 
 # For development (start the hexo server and pop open a browser):
 yarn dev
+
+# To create posts:
+yarn new-post <title>
 ```
