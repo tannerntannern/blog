@@ -64,12 +64,12 @@ Budgeteer understands JavaScript, which is great if you already know JavaScript,
 
 ![Editor code completion](code-completion1.gif)
 
-### Main Concepts
+## Main Concepts
 Budgeteer has just a few main concepts.  You can probably pick them up in a matter of minutes.
 
-#### Node Types
+### Nodes
 Each point where flows connect on the chart is a "node."  There are three types of nodes:
-1. **Supplies** - Nodes with a fixed supply that are only consumed from
+1. **Supplies** - Nodes with a fixed supply that only give resources to other nodes
 1. **Consumers** - Nodes that only consume from other nodes
 1. **Pipes** - Nodes that both consume from and supply other nodes
 
@@ -77,7 +77,9 @@ Nodes that can consume from other nodes (and thus receive supply) are called _su
 
 This means (somewhat confusingly) that **supply** nodes are _consumable_, **consumer** nodes are _supplyable_, and **pipe** nodes are both consumable _and_ supplyable.
 
-#### Node Relationships
+> Knowing this terminology isn't required for using the tool, but may be helpful if you start digging into the technical side of the API.
+
+### Node Relationships
 There are three types of relationships a node can establish with another:
 1. `A.supplies(<amount>).to(B)` or `B.consumes(<amount>).from(A)`
 
@@ -94,10 +96,10 @@ There are three types of relationships a node can establish with another:
 	One node gives whatever it can to the other.
 	
 
-### Examples
+## Examples
 The default example code on the [Budgeteer Website][3] pretty much includes all of budgeteer's features.  Feel free to skip these examples that's enough for you to get the gist.
 
-#### Basic Use: Supplies and Consumers
+### Basic Use: Supplies and Consumers
 Supplies and consumers are the basic building blocks of any model in budgeteer.  Here's a basic example:
 
 ```javascript
@@ -117,7 +119,7 @@ supply('Snack Money', 3.00)
     .supplies(1.50).to(consumer('Gatorade'));
 ```
 
-#### Variable Supply and Consumption
+### Variable Supply and Consumption
 You may encounter some situations where you'd rather leave a value unspecified.  Here's an example of how you might do that:
 
 ```javascript
@@ -133,17 +135,16 @@ time.suppliesAsMuchAsPossible().to(consumer('Free time'));
 
 ![Variable supply example](example2.svg)
 
-Notice how the amount for "Free time" is unspecified by using `suppliesAsMuchAsPossible()`.  It just gets whatever is left over.
+Notice how the amount for "Free time" is unspecified by using `suppliesAsMuchAsPossible()`, which means it just gets whatever is left over, which happens to be 6.5 in this case.  Now suppose you decide to start biking to work which takes twice as long.  That brings your commute up to an hour and your free time down to 6.  Rather than update both values, you can just update the one that changed (your commute), and the free time will automatically adjust.
 
-#### Using Pipes
-Some models require going beyond basic supplies and consumers, which is where pipes come in.  Pipes are useful for "resource pooling":
+### Using Pipes
+Some models require going beyond basic supplies and consumers, which is where pipes come in.  Pipes are useful for pooling or grouping resources:
 
 ```javascript
 let combinedIncome = pipe('Combined Income');
 
-combinedIncome
-	.consumesAsMuchAsPossible().from(supply('My Income', 2000))
-	.consumesAsMuchAsPossible().from(supply('Spouse Income', 2000));
+supply('My Income', 2000).suppliesAsMuchAsPossible().to(combinedIncome);
+supply('Spouse Income', 2000).suppliesAsMuchAsPossible().to(combinedIncome);
 
 consumer('Rent').consumes(1500).from(combinedIncome);
 consumer('Food').consumes(500).from(combinedIncome);
@@ -152,18 +153,52 @@ consumer('Savings').consumesAsMuchAsPossible().from(combinedIncome);
 
 ![Resource pooling example](example3.svg)
 
-Pipes can also be useful for simply grouping consumers (or other pipes) together.  Here's a more complex example:
+Pipes are especially useful with the `asMuchAsNecessary` relationship.  Here's a practical example:
 
-<!-- TODO: ... -->
+```javascript
+const SALARY = 80_000;
+const WORKERS_PER_DEPARTMENT = 50;
+const DEPARTMENT_SALARIES = SALARY * WORKERS_PER_DEPARTMENT;
 
-#### Using Multipliers
-<!-- TODO: ... -->
+let revenue = supply('Company Revenue', 25_000_000);
+let expenses = pipe('Total Expenses');
+let profit = consumer('Total Profit');
 
-### Complete API Reference
+revenue
+    .suppliesAsMuchAsNecessary().to(expenses)
+    .suppliesAsMuchAsPossible().to(profit);
+
+function makeDepartment(name) {
+    let department = pipe(`Department ${name}`);
+    let departmentExpenses = pipe(`Dpt. ${name} Expenses`);
+
+    department
+        .supplies(DEPARTMENT_SALARIES).to(consumer(`Dpt. ${name} Salaries`))
+        .suppliesAsMuchAsNecessary().to(departmentExpenses);
+	
+    departmentExpenses
+        .supplies(1_000_000).to(consumer(`Dpt. ${name} Expense 1`))
+        .supplies(1_000_000).to(consumer(`Dpt. ${name} Expense 2`))
+        .supplies(1_000_000).to(consumer(`Dpt. ${name} Expense 3`));
+	
+    return department;
+}
+
+expenses
+    .suppliesAsMuchAsNecessary().to(makeDepartment('A'))
+    .suppliesAsMuchAsNecessary().to(makeDepartment('B'))
+    .suppliesAsMuchAsNecessary().to(makeDepartment('C'));
+```
+
+!["As much as necessary" relationship example](example4.svg)
+
+Notice how neither the company's total expenses or profit, nor the department's total expenses are specified -- they are all derived from other values.  This is one of the most useful additions that Budgeteer brings to SankeyMATIC.
+
+## Complete API Reference
 This article is meant to provide a basic overview of the Budgeteer API.  If you would like a more complete, technical reference, check out the [budgeteer repository][1].
 
 ## Exporting Your Chart
-Todo...
+The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunately, PNG rendering didn't seem to work on my copy of the code and frankly, it wasn't worth it for me to figure it out.  So you'll have to use SVG, but hey, SVG is better anyway. 
 
 # Appreciating the Underlying Math
 Coming soon...
