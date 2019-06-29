@@ -5,7 +5,8 @@ date: 2019-06-25 18:01:34
 tags:
   - javascript
   - typescript
-  - budgetting
+  - budgeteer
+  - math
 ---
 
 {% asset_img "promo.svg" %}
@@ -200,7 +201,10 @@ Notice how neither the company's total expenses or profit, nor the departments' 
 That's enough examples for now.  This article is meant to provide a basic overview of the Budgeteer API.  If you would like a more complete, technical reference, check out the [budgeteer repository][1].
 
 ## Exporting Your Chart
-The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunately, PNG rendering didn't seem to work on my copy of the code and frankly, it wasn't worth it for me to figure it out.  So you'll have to use SVG, but hey, SVG is better anyway. 
+The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunately, PNG rendering didn't seem to work on my copy of the code and frankly, it wasn't worth it for me to figure it out.  So you'll have to use SVG, but hey, SVG is better anyway.
+
+<!-- Super hacky separator -->
+{% raw %}<div style="text-align: center; font-size: 1.8em; margin: 2em 0;">* * *</div>{% endraw %}
 
 # Appreciating the Underlying Math
 <!-- MathJax setup -->
@@ -213,7 +217,7 @@ The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunatel
     });
 </script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-<style>.MathJax_CHTML { font-size: 1.7em; }</style>
+<style>.MathJax_CHTML { font-size: 1.6em; }</style>
 {% endraw %}
 
 Trying to figure out the math of balancing these flow networks is what originally plunged me into this project.  The problem is deceivingly simple, which is why I originally thought I could just hack up some JavaScript to spit out the SankeyMATIC code for my personal use.  However, after several evenings after work spent on trying to develop a good algorithm, I realized it was a trickier problem than I had realized, so I decided to take a different approach.
@@ -262,6 +266,94 @@ $$
 {% endraw %}
 
 ## Turning Flows into Constraints
+With definitions out of the way, we can start to reason about how budgeteer code will translate to constraints.  For example, what does it mean to define a supply node, or a consumer, or a pipe with constraints?  Let's start with supplies:
+
+### Creating Supplies
+```javascript
+let x = 1000;
+let s = supply('Supply', x);
+```
+
+In the context of balancing budgets we want to make sure that our supply is not overdrawn, so our constraints will look like the following:
+
+$$B_s \geq 0, B_s = x - \sum_{i \in C_s} T^s_i$$
+
+This defines the balance for the supply, $s$, to be the initial amount, $x$, minus the sum of transfers to each node that consumes from the supply, additionally stipulating that it not dip below 0.  In other words, what the supply has left is what it started with minus the amount that the other nodes took from it.
+
+### Creating Consumers
+```javascript
+let c = consumer('Consumer');
+```
+
+The balance for a consumer is simply the sum of transfers coming in from its suppliers:
+
+$$B_c = \sum_{i \in S_c} T^i_c$$
+
+### Creating Pipes
+```javascript
+let p = pipe('Pipe');
+```
+
+Pipes have both suppliers and consumers.  In the context of balancing flows, we want the inputs and outputs to cancel out, which means we want the balance to be 0:
+
+$$B_p = 0, B_p = (\sum_{i \in S_p} T^i_p) - (\sum_{i \in C_p} T^p_i)$$
+
+This defines the balance for the pipe, $p$, to be the sum of transfers *from* each node that supplies it, minus the sum of transfers *to* each node that consumes from it, which should cancel out to 0.  In other words, the pipe should be given the same amount from its suppliers that it gives away to its consumers.
+
+### Transferring a Fixed Amount
+```javascript
+let s = supply('Supply', 1000);
+let c = consumer('Consumer');
+let x = 500;
+
+c.consumes(x).from(s);
+```
+
+With those constraints specified upfront, establishing relationships is actually pretty straightforward.
+
+$$s \in S_c, c \in C_s, T^s_c = x, T^s_c = -T^c_s$$
+
+Here we are just saying that $s$ is a supplier of $c$, $c$ is a consumer of $s$, and that the amount transferred between them is $x$.
+
+### Transferring a Variable Amount
+```javascript
+let s = supply('Supply', 1000);
+let p = pipe('Pipe');
+
+s.suppliesAsMuchAsPossible().to(p);
+// or
+s.suppliesAsMuchAsNecessary().to(p);
+```
+
+Transferring a variable amount is nearly identical to transferring a fixed amount:
+
+$$s \in S_p, p \in C_s, T^s_p \geq 0, T^s_p = -T^p_s$$
+
+Since we don't have a specific value, we just say that the transfer between the two nodes should be larger than 0.  However, you may be wondering what the difference between "as much as possible" and "as much as necessary" is then.
+
+The answer by using "weak constraints."  So far, all the constraints we considered are absolutely required.  If the constraint solver can't find a set of variables that satisfies every last constraint, it will throw an error.  However, you can also specify constraints that the solver will try its best to satisfy, but if it falls short it won't throw an error.
+
+With this in mind, we can specify an additional "weak constraint" for the `suppliesAsMuchAsPossible` relationship:
+
+$$T^p_s = \infty$$
+
+Obviously, this can't be satisfied, but it will cause the constraint solver to make $T^p_s$ as large as it possibly can without breaking the other constraints.  Likewise, we can specify the following weak constraint for the `suppliesAsMuchAsNecessary` relationship:
+
+$$T^p_s = 0$$
+
+Again, this can't be satisfied, but it will cause the constraint solver to make $T^p_s$ as small as possible.
+
+## Summary
+That's all of the math!  Here's a summary of how the various pieces translate:
+
+| Budgeteer code | Required constraints | Weak Constraints |
+| -------------- | -------------------- | ---------------- |
+| `s = supply(..., x)` | $B_s \geq 0, B_s = x - \sum_{i \in C_s} T^s_i$ | N/A |
+| `c = consumer(...)` | $B_c = \sum_{i \in S_c} T^i_c$ | N/A |
+| `p = pipe(...)` | $B_p = 0, B_p = (\sum_{i \in S_p} T^i_p) - (\sum_{i \in C_p} T^p_i)$ | N/A |
+| `c.consumes(x).from(s)` | $s \in S_c, c \in C_s, T^s_c = x, T^s_c = -T^c_s$ | N/A |
+| `p.consumesAsMuchAsPossible().from(s)` | $s \in S_p, p \in C_s, T^s_p \geq 0, T^s_p = -T^p_s$ | $T^p_s = \infty$ |
+| `p.consumesAsMuchAsNecessary().from(s)` | (same as above) | $T^p_s = 0$ |
 
 [1]: https://github.com/tannerntannern/budgeteer
 [2]: https://github.com/tannerntannern/budgeteer-sankeymatic
