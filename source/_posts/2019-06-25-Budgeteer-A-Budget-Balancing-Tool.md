@@ -10,7 +10,7 @@ tags:
 
 {% asset_img "promo.svg" %}
 
-You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn't always worth the effort.  That's why I created a tool called [Budgeteer][3] that makes it easier than ever to make these charts.  In this post, I'd like to talk a little bit about how to use the tool as well as some of the math behind it.
+You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn't always worth the effort.  That's why I created a tool called [Budgeteer][3] that makes it easy make these charts without tedious work.  In this post, I'd like to talk a little bit about how to use the tool as well as some of the math behind it.
 
 <!-- more -->
 
@@ -43,8 +43,8 @@ Income.suppliesRemaining().to(Spending)
 ```
 
 There's a much different intent communicated here:
-* It emphasizes that "Income" is a fixed supply with a certain amount
-* It describes "Rent" as "consuming" income as opposed to "being supplied by" Income
+* It emphasizes that "Income" is a fixed supply with a specific amount
+* It describes "Rent" as "consuming" income as opposed to "being supplied by" income
 * It suggests that "Spending" is lower priority than rent and savings as it just gets "the leftovers"
 
 This "leftovers" feature would be very nice for making complicated flows.  Calculating differences is easy for trivial flows like this, but it becomes unwieldy with more complicated flows like the one shown at the top of this post.
@@ -65,7 +65,7 @@ Budgeteer understands JavaScript, which is great if you already know JavaScript,
 ![Editor code completion](code-completion1.gif)
 
 ## Main Concepts
-Budgeteer has just a few main concepts.  You can probably pick them up in a matter of minutes.
+Budgeteer has just a few main concepts.  Understanding them before making a diagram is helpful, but if you'd rather learn by example, skip to the [examples section](#Examples).
 
 ### Nodes
 Each point where flows connect on the chart is a "node."  There are three types of nodes:
@@ -100,7 +100,7 @@ There are three types of relationships a node can establish with another:
 The default example code on the [Budgeteer Website][3] pretty much includes all of budgeteer's features.  Feel free to skip these examples that's enough for you to get the gist.
 
 ### Basic Use: Supplies and Consumers
-Supplies and consumers are the basic building blocks of any model in budgeteer.  Here's a basic example:
+Supplies and consumers are the basic building blocks of any model in budgeteer.  Here's an example:
 
 ```javascript
 let snackMoney = supply('Snack Money', 3.00);
@@ -111,7 +111,7 @@ consumer('Gatorade').consumes(1.50).from(snackMoney);
 
 ![Snack money example](example1.svg)
 
-If you prefer to think of snack money as a supplier rather than an object of consumption, you could also write it this way, which results in the exact same diagram:
+If you prefer to think of snack money as a supply rather than an object of consumption, you could also write it this way, which results in the exact same diagram:
 
 ```javascript
 supply('Snack Money', 3.00)
@@ -135,7 +135,7 @@ time.suppliesAsMuchAsPossible().to(consumer('Free time'));
 
 ![Variable supply example](example2.svg)
 
-Notice how the amount for "Free time" is unspecified by using `suppliesAsMuchAsPossible()`, which means it just gets whatever is left over, which happens to be 6.5 in this case.  Now suppose you decide to start biking to work which takes twice as long.  That brings your commute up to an hour and your free time down to 6.  Rather than update both values, you can just update the one that changed (your commute), and the free time will automatically adjust.
+Notice how "Free time" is not supplied with a specific amount but rather with "as much as possible," which happens to be 6.5 in this case.  Now suppose you decide to start biking to work which takes twice as long.  That brings your commute up to an hour and your free time down to 6.  Rather than update both values, you can just update the one that changed (your commute), and the free time will automatically adjust.
 
 ### Using Pipes
 Some models require going beyond basic supplies and consumers, which is where pipes come in.  Pipes are useful for pooling or grouping resources:
@@ -148,12 +148,13 @@ supply('Spouse Income', 2000).suppliesAsMuchAsPossible().to(combinedIncome);
 
 consumer('Rent').consumes(1500).from(combinedIncome);
 consumer('Food').consumes(500).from(combinedIncome);
+consumer('Other bills').consumes(1200).from(combinedIncome);
 consumer('Savings').consumesAsMuchAsPossible().from(combinedIncome);
 ```
 
 ![Resource pooling example](example3.svg)
 
-Pipes are especially useful with the `asMuchAsNecessary` relationship.  Here's a practical example:
+Pipes are especially useful with the `asMuchAsNecessary` relationship.  Here's a more complex, but practical example:
 
 ```javascript
 const SALARY = 80_000;
@@ -168,6 +169,12 @@ revenue
     .suppliesAsMuchAsNecessary().to(expenses)
     .suppliesAsMuchAsPossible().to(profit);
 
+expenses
+    .suppliesAsMuchAsNecessary().to(makeDepartment('A'))
+    .suppliesAsMuchAsNecessary().to(makeDepartment('B'))
+    .suppliesAsMuchAsNecessary().to(makeDepartment('C'));
+
+// since this is just JavaScript, you can use functions to speed things up!
 function makeDepartment(name) {
     let department = pipe(`Department ${name}`);
     let departmentExpenses = pipe(`Dpt. ${name} Expenses`);
@@ -183,28 +190,83 @@ function makeDepartment(name) {
 	
     return department;
 }
-
-expenses
-    .suppliesAsMuchAsNecessary().to(makeDepartment('A'))
-    .suppliesAsMuchAsNecessary().to(makeDepartment('B'))
-    .suppliesAsMuchAsNecessary().to(makeDepartment('C'));
 ```
 
 !["As much as necessary" relationship example](example4.svg)
 
-Notice how neither the company's total expenses or profit, nor the department's total expenses are specified -- they are all derived from other values.  This is one of the most useful additions that Budgeteer brings to SankeyMATIC.
+Notice how neither the company's total expenses or profit, nor the departments' total expenses are specified -- instead, Budgeteer figures out what the values should be behind the scenes.  This is by far the most useful addition that Budgeteer brings to SankeyMATIC.
 
 ## Complete API Reference
-This article is meant to provide a basic overview of the Budgeteer API.  If you would like a more complete, technical reference, check out the [budgeteer repository][1].
+That's enough examples for now.  This article is meant to provide a basic overview of the Budgeteer API.  If you would like a more complete, technical reference, check out the [budgeteer repository][1].
 
 ## Exporting Your Chart
 The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunately, PNG rendering didn't seem to work on my copy of the code and frankly, it wasn't worth it for me to figure it out.  So you'll have to use SVG, but hey, SVG is better anyway. 
 
 # Appreciating the Underlying Math
-Coming soon...
+<!-- MathJax setup -->
+{% raw %}
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$', '$'] ]
+        }
+    });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<style>.MathJax_CHTML { font-size: 1.7em; }</style>
+{% endraw %}
+
+Trying to figure out the math of balancing these flow networks is what originally plunged me into this project.  The problem is deceivingly simple, which is why I originally thought I could just hack up some JavaScript to spit out the SankeyMATIC code for my personal use.  However, after several evenings after work spent on trying to develop a good algorithm, I realized it was a trickier problem than I had realized, so I decided to take a different approach.
+
+In college, I was briefly acquainted with [constraint solvers][6].  If you aren't familiar with constraint solvers, they essentially just take a bunch of variables and constraints, and produce a set of values for the variables that satisfy the constraints.  After wrestling with the flow balancing problem for awhile, it became clear that a constraint solver ([kiwi.js][7] in my case) would be a good tool for the job.
+
+But the whole reason I went down this rabbit hole was to develop an alternative to SankeyMATIC's rigid and cumbersome language.  Just using a constraint solver wasn't the answer, because specifying variables and constraints is _way more_ cumbersome and difficult to read.  So instead, Budgeteer acts as a translator:
+
+![Budgeteer process flow](process-flow.svg)
+
+This highlighted section above is where all the interesting stuff happens, so that's what I'll be talking about.
+
+## Definitions
+In constraint-solving land, everything is a variable.  This means that the amount of resources at each node gets its own variable, and the amounts transferred between it and every other node all get their own variables too... That's a lotta variables.  To keep things straight, let's setup some definitions:
+
+| Symbol | Definition |
+| ------ | ---------- |
+| $B_i$ | The numeric balance at node $i$  |
+| $T^i_j$ | The numeric amount transferred from node $i$ to node $j$ |
+| $C_i$ | The set of nodes that consume from node $i$ |
+| $S_i$ | The set of nodes that give supply to node $i$ |
+
+### Visual Definitions
+If you prefer to think visually, this may help you:
+<!-- https://www.jmilne.org/not/Mamscd.pdf -->
+{% raw %}
+$$
+\require{AMScd}
+\begin{CD}
+    a @>{T^a_b}>> b\\
+    @V{T^a_c}VV @VV{T^b_d}V\\
+    c @>>{T^c_d}> d
+\end{CD}
+$$
+{% endraw %}
+
+Given the previous information, the following statements would also be true:
+
+{% raw %}
+$$
+S_a = \emptyset, C_a = \{b, c\}\\
+S_b = \{a\}, C_b = \{d\}\\
+S_c = \{a\}, C_c = \{d\}\\
+S_d = \{b, c\}, C_d = \emptyset
+$$
+{% endraw %}
+
+## Turning Flows into Constraints
 
 [1]: https://github.com/tannerntannern/budgeteer
 [2]: https://github.com/tannerntannern/budgeteer-sankeymatic
 [3]: https://budgeteer.tannernielsen.com
 [4]: http://sankeymatic.com
 [5]: https://twitter.com/nowthis/
+[6]: https://en.wikipedia.org/wiki/Constraint_satisfaction
+[7]: https://github.com/IjzerenHein/kiwi.js
