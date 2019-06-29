@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Budgeteer - A Budget-Balancing Tool - Tanner&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+<meta name="description" content="A humble blog about programming, and sometimes music.">
+
+
+
+<meta name="keywords" content="programming,blog,music,tanner,nielsen,tannerntannern">
+
+
+
+    <meta name="description" content="You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn’t always worth the effort.  That’s why I created a tool called Budgeteer that makes it e">
+<meta name="keywords" content="javascript,typescript,math,budgeteer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Budgeteer - A Budget-Balancing Tool">
+<meta property="og:url" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/index.html">
+<meta property="og:site_name" content="Tanner&#39;s Blog">
+<meta property="og:description" content="You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn’t always worth the effort.  That’s why I created a tool called Budgeteer that makes it e">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/promo.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/problem1.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/code-completion1.gif">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/example1.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/example2.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/example3.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/example4.svg">
+<meta property="og:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/process-flow.svg">
+<meta property="og:updated_time" content="2019-06-29T22:59:38.850Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Budgeteer - A Budget-Balancing Tool">
+<meta name="twitter:description" content="You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn’t always worth the effort.  That’s why I created a tool called Budgeteer that makes it e">
+<meta name="twitter:image" content="http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/promo.svg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133282524-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133282524-2');
+</script>
+
+
+    
+
+
+</head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Tanner&#39;s Blog
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item " href="/archives">Archives</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/tannerntannern">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope="" itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Budgeteer - A Budget-Balancing Tool
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-06-25T23:01:34.000Z" itemprop="datePublished">Jun 25 2019</time>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            17 minutes read (About 2573 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <img src="/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/promo.svg">
+<p>You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn’t always worth the effort.  That’s why I created a tool called <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer</a> that makes it easy make these charts without tedious work.  In this post, I’d like to talk a little bit about how to use the tool as well as some of the math behind it.</p>
+<a id="more"></a>
+<ul>
+<li><a href="#Using-the-Budgeteer-Website">Click here</a> if you just want to learn how to use the tool</li>
+<li><a href="#Appreciating-the-Underlying-Math">Click here</a> if you’re interested in the underlying math</li>
+</ul>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>Before I continue I must give credit to <a href="https://twitter.com/nowthis/" target="_blank" rel="noopener">Steve Bogart</a> who created the <a href="http://sankeymatic.com" target="_blank" rel="noopener">original SankeyMATIC</a> tool that this project is based on.  It’s an excellent tool and may even suit your needs better than Budgeteer for simple use cases. </p>
+<h2 id="Problems-with-SankeyMATIC"><a href="#Problems-with-SankeyMATIC" class="headerlink" title="Problems with SankeyMATIC"></a>Problems with SankeyMATIC</h2><p>However, what I didn’t like about SankeyMATIC (and other tools like it) is that modelling flows is a bit inflexible.  For example, consider the following:</p>
+<p><img src="problem1.svg" alt="SankeyMATIC problem 1"></p>
+<p>The code to generate this diagram with SankeyMATIC is simple:</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Income [10] Rent</span><br><span class="line">Income [10] Savings</span><br><span class="line">Income [10] Spending</span><br></pre></td></tr></table></figure>
+<p>However, this code doesn’t capture the <em>logic</em> of these flows; it only describes <em>results</em>.  What would be much better is something like this:</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Income = supply(30)</span><br><span class="line">Rent.consumes(10).from(Income)</span><br><span class="line">Income.supplies(10).to(Savings)</span><br><span class="line">Income.suppliesRemaining().to(Spending)</span><br></pre></td></tr></table></figure>
+<p>There’s a much different intent communicated here:</p>
+<ul>
+<li>It emphasizes that “Income” is a fixed supply with a specific amount</li>
+<li>It describes “Rent” as “consuming” income as opposed to “being supplied by” income</li>
+<li>It suggests that “Spending” is lower priority than rent and savings as it just gets “the leftovers”</li>
+</ul>
+<p>This “leftovers” feature would be very nice for making complicated flows.  Calculating differences is easy for trivial flows like this, but it becomes unwieldy with more complicated flows like the one shown at the top of this post.</p>
+<h2 id="Enter-Budgeteer"><a href="#Enter-Budgeteer" class="headerlink" title="Enter Budgeteer"></a>Enter Budgeteer</h2><p>In a nutshell, this more expressive syntax and auto-calculated differences is what <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer</a> provides.  Budgeteer does not replace SankeyMATIC, but rather builds directly on top of it; it acts as a middleman, translating a more expressive JavaScript-based API into the code that SankeyMATIC understands.</p>
+<blockquote>
+<p>Technically, <a href="https://github.com/tannerntannern/budgeteer" target="_blank" rel="noopener">Budgeteer is a separate, standalone TypeScript package</a> that can operate outside of SankeyMATIC, but it can only be used programmatically.  <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer + SankeyMATIC</a> is the website that integrates it into a graphical tool like SankeyMATIC.  See the <a href="https://github.com/tannerntannern/budgeteer-sankeymatic" target="_blank" rel="noopener">repository for the website</a> if you want to learn more.</p>
+</blockquote>
+<p>With that lengthy intro out of the way, let’s jump into using the <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer Website</a>!</p>
+<h1 id="Using-the-Budgeteer-Website"><a href="#Using-the-Budgeteer-Website" class="headerlink" title="Using the Budgeteer Website"></a>Using the Budgeteer Website</h1><p>If you know how to use <a href="http://sankeymatic.com" target="_blank" rel="noopener">SankeyMATIC</a>, you already know most of <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer</a>.  The only substantial change is how your code translates into a diagram, which is what I’ll focus on.</p>
+<h2 id="Budgeteer’s-Language"><a href="#Budgeteer’s-Language" class="headerlink" title="Budgeteer’s Language"></a>Budgeteer’s Language</h2><p>Budgeteer understands JavaScript, which is great if you already know JavaScript, but not so great if you don’t.  To mitigate this, I designed the API to read like spoken English as much as possible.  Additionally the code editor on the website will help you out a lot as you type:</p>
+<p><img src="code-completion1.gif" alt="Editor code completion"></p>
+<h2 id="Main-Concepts"><a href="#Main-Concepts" class="headerlink" title="Main Concepts"></a>Main Concepts</h2><p>Budgeteer has just a few main concepts.  Understanding them before making a diagram is helpful, but if you’d rather learn by example, skip to the <a href="#Examples">examples section</a>.</p>
+<h3 id="Nodes"><a href="#Nodes" class="headerlink" title="Nodes"></a>Nodes</h3><p>Each point where flows connect on the chart is a “node.”  There are three types of nodes:</p>
+<ol>
+<li><strong>Supplies</strong> - Nodes with a fixed supply that only give resources to other nodes</li>
+<li><strong>Consumers</strong> - Nodes that only consume from other nodes</li>
+<li><strong>Pipes</strong> - Nodes that both consume from and supply other nodes</li>
+</ol>
+<p>Nodes that can consume from other nodes (and thus receive supply) are called <em>supplyable</em>.  Nodes that can supply other nodes (and thus be consumed) are called <em>consumable</em>.</p>
+<p>This means (somewhat confusingly) that <strong>supply</strong> nodes are <em>consumable</em>, <strong>consumer</strong> nodes are <em>supplyable</em>, and <strong>pipe</strong> nodes are both consumable <em>and</em> supplyable.</p>
+<blockquote>
+<p>Knowing this terminology isn’t required for using the tool, but may be helpful if you start digging into the technical side of the API.</p>
+</blockquote>
+<h3 id="Node-Relationships"><a href="#Node-Relationships" class="headerlink" title="Node Relationships"></a>Node Relationships</h3><p>There are three types of relationships a node can establish with another:</p>
+<ol>
+<li><p><code>A.supplies(&lt;amount&gt;).to(B)</code> or <code>B.consumes(&lt;amount&gt;).from(A)</code></p>
+<p> One node supplies a fixed amount to another.</p>
+</li>
+</ol>
+<ol start="2">
+<li><p><code>A.suppliesAsMuchAsNecessary().to(B)</code> or <code>B.consumesAsMuchAsNecessary().from(A)</code></p>
+<p> One node supplies only as much as the other needs.</p>
+</li>
+</ol>
+<ol start="3">
+<li><p><code>A.suppliesAsMuchAsPossible().to(B)</code> or <code>B.consumesAsMuchAsPossible().from(A)</code></p>
+<p> One node gives whatever it can to the other.</p>
+</li>
+</ol>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><p>The default example code on the <a href="https://budgeteer.tannernielsen.com" target="_blank" rel="noopener">Budgeteer Website</a> pretty much includes all of budgeteer’s features.  Feel free to skip these examples that’s enough for you to get the gist.</p>
+<h3 id="Basic-Use-Supplies-and-Consumers"><a href="#Basic-Use-Supplies-and-Consumers" class="headerlink" title="Basic Use: Supplies and Consumers"></a>Basic Use: Supplies and Consumers</h3><p>Supplies and consumers are the basic building blocks of any model in budgeteer.  Here’s an example:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> snackMoney = supply(<span class="hljs-string">'Snack Money'</span>, <span class="hljs-number">3.00</span>);</span><br><span class="line"></span><br><span class="line">consumer(<span class="hljs-string">'Chips'</span>).consumes(<span class="hljs-number">1.50</span>).from(snackMoney);</span><br><span class="line">consumer(<span class="hljs-string">'Gatorade'</span>).consumes(<span class="hljs-number">1.50</span>).from(snackMoney);</span><br></pre></td></tr></table></figure>
+<p><img src="example1.svg" alt="Snack money example"></p>
+<p>If you prefer to think of snack money as a supply rather than an object of consumption, you could also write it this way, which results in the exact same diagram:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">supply(<span class="hljs-string">'Snack Money'</span>, <span class="hljs-number">3.00</span>)</span><br><span class="line">    .supplies(<span class="hljs-number">1.50</span>).to(consumer(<span class="hljs-string">'Chips'</span>))</span><br><span class="line">    .supplies(<span class="hljs-number">1.50</span>).to(consumer(<span class="hljs-string">'Gatorade'</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="Variable-Supply-and-Consumption"><a href="#Variable-Supply-and-Consumption" class="headerlink" title="Variable Supply and Consumption"></a>Variable Supply and Consumption</h3><p>You may encounter some situations where you’d rather leave a value unspecified.  Here’s an example of how you might do that:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> time = supply(<span class="hljs-string">'Hours of the day'</span>, <span class="hljs-number">24</span>);</span><br><span class="line"></span><br><span class="line">consumer(<span class="hljs-string">'Sleep'</span>).consumes(<span class="hljs-number">8</span>).from(time);</span><br><span class="line">consumer(<span class="hljs-string">'Morning Routine'</span>).consumes(<span class="hljs-number">1</span>).from(time);</span><br><span class="line">consumer(<span class="hljs-string">'Commute'</span>).consumes(<span class="hljs-number">0.5</span>).from(time);</span><br><span class="line">consumer(<span class="hljs-string">'Work'</span>).consumes(<span class="hljs-number">8</span>).from(time);</span><br><span class="line"></span><br><span class="line">time.suppliesAsMuchAsPossible().to(consumer(<span class="hljs-string">'Free time'</span>));</span><br></pre></td></tr></table></figure>
+<p><img src="example2.svg" alt="Variable supply example"></p>
+<p>Notice how “Free time” is not supplied with a specific amount but rather with “as much as possible,” which happens to be 6.5 in this case.  Now suppose you decide to start biking to work which takes twice as long.  That brings your commute up to an hour and your free time down to 6.  Rather than update both values, you can just update the one that changed (your commute), and the free time will automatically adjust.</p>
+<h3 id="Using-Pipes"><a href="#Using-Pipes" class="headerlink" title="Using Pipes"></a>Using Pipes</h3><p>Some models require going beyond basic supplies and consumers, which is where pipes come in.  Pipes are useful for pooling or grouping resources:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> combinedIncome = pipe(<span class="hljs-string">'Combined Income'</span>);</span><br><span class="line"></span><br><span class="line">supply(<span class="hljs-string">'My Income'</span>, <span class="hljs-number">2000</span>).suppliesAsMuchAsPossible().to(combinedIncome);</span><br><span class="line">supply(<span class="hljs-string">'Spouse Income'</span>, <span class="hljs-number">2000</span>).suppliesAsMuchAsPossible().to(combinedIncome);</span><br><span class="line"></span><br><span class="line">consumer(<span class="hljs-string">'Rent'</span>).consumes(<span class="hljs-number">1500</span>).from(combinedIncome);</span><br><span class="line">consumer(<span class="hljs-string">'Food'</span>).consumes(<span class="hljs-number">500</span>).from(combinedIncome);</span><br><span class="line">consumer(<span class="hljs-string">'Other bills'</span>).consumes(<span class="hljs-number">1200</span>).from(combinedIncome);</span><br><span class="line">consumer(<span class="hljs-string">'Savings'</span>).consumesAsMuchAsPossible().from(combinedIncome);</span><br></pre></td></tr></table></figure>
+<p><img src="example3.svg" alt="Resource pooling example"></p>
+<p>Pipes are especially useful with the <code>asMuchAsNecessary</code> relationship.  Here’s a more complex, but practical example:</p>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> SALARY = <span class="hljs-number">80</span>_000;</span><br><span class="line"><span class="hljs-keyword">const</span> WORKERS_PER_DEPARTMENT = <span class="hljs-number">50</span>;</span><br><span class="line"><span class="hljs-keyword">const</span> DEPARTMENT_SALARIES = SALARY * WORKERS_PER_DEPARTMENT;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">let</span> revenue = supply(<span class="hljs-string">'Company Revenue'</span>, <span class="hljs-number">25</span>_000_000);</span><br><span class="line"><span class="hljs-keyword">let</span> expenses = pipe(<span class="hljs-string">'Total Expenses'</span>);</span><br><span class="line"><span class="hljs-keyword">let</span> profit = consumer(<span class="hljs-string">'Total Profit'</span>);</span><br><span class="line"></span><br><span class="line">revenue</span><br><span class="line">    .suppliesAsMuchAsNecessary().to(expenses)</span><br><span class="line">    .suppliesAsMuchAsPossible().to(profit);</span><br><span class="line"></span><br><span class="line">expenses</span><br><span class="line">    .suppliesAsMuchAsNecessary().to(makeDepartment(<span class="hljs-string">'A'</span>))</span><br><span class="line">    .suppliesAsMuchAsNecessary().to(makeDepartment(<span class="hljs-string">'B'</span>))</span><br><span class="line">    .suppliesAsMuchAsNecessary().to(makeDepartment(<span class="hljs-string">'C'</span>));</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// since this is just JavaScript, you can use functions to speed things up!</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeDepartment</span>(<span class="hljs-params">name</span>) </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">let</span> department = pipe(<span class="hljs-string">`Department <span class="hljs-subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line">    <span class="hljs-keyword">let</span> departmentExpenses = pipe(<span class="hljs-string">`Dpt. <span class="hljs-subst">$&#123;name&#125;</span> Expenses`</span>);</span><br><span class="line"></span><br><span class="line">    department</span><br><span class="line">        .supplies(DEPARTMENT_SALARIES).to(consumer(<span class="hljs-string">`Dpt. <span class="hljs-subst">$&#123;name&#125;</span> Salaries`</span>))</span><br><span class="line">        .suppliesAsMuchAsNecessary().to(departmentExpenses);</span><br><span class="line">	</span><br><span class="line">    departmentExpenses</span><br><span class="line">        .supplies(<span class="hljs-number">1</span>_000_000).to(consumer(<span class="hljs-string">`Dpt. <span class="hljs-subst">$&#123;name&#125;</span> Expense 1`</span>))</span><br><span class="line">        .supplies(<span class="hljs-number">1</span>_000_000).to(consumer(<span class="hljs-string">`Dpt. <span class="hljs-subst">$&#123;name&#125;</span> Expense 2`</span>))</span><br><span class="line">        .supplies(<span class="hljs-number">1</span>_000_000).to(consumer(<span class="hljs-string">`Dpt. <span class="hljs-subst">$&#123;name&#125;</span> Expense 3`</span>));</span><br><span class="line">	</span><br><span class="line">    <span class="hljs-keyword">return</span> department;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="example4.svg" alt="&quot;As much as necessary&quot; relationship example"></p>
+<p>Notice how neither the company’s total expenses or profit, nor the departments’ total expenses are specified – instead, Budgeteer figures out what the values should be behind the scenes.  This is by far the most useful addition that Budgeteer brings to SankeyMATIC.</p>
+<h2 id="Complete-API-Reference"><a href="#Complete-API-Reference" class="headerlink" title="Complete API Reference"></a>Complete API Reference</h2><p>That’s enough examples for now.  This article is meant to provide a basic overview of the Budgeteer API.  If you would like a more complete, technical reference, check out the <a href="https://github.com/tannerntannern/budgeteer" target="_blank" rel="noopener">budgeteer repository</a>.</p>
+<h2 id="Exporting-Your-Chart"><a href="#Exporting-Your-Chart" class="headerlink" title="Exporting Your Chart"></a>Exporting Your Chart</h2><p>The original SankeyMATIC tool had both PNG and SVG export options.  Unfortunately, PNG rendering didn’t seem to work on my copy of the code and frankly, it wasn’t worth it for me to figure it out.  So you’ll have to use SVG, but hey, SVG is better anyway.</p>
+<!-- Super hacky separator -->
+<div style="text-align: center; font-size: 1.8em; margin: 2em 0;">* * *</div>
+<h1 id="Appreciating-the-Underlying-Math"><a href="#Appreciating-the-Underlying-Math" class="headerlink" title="Appreciating the Underlying Math"></a>Appreciating the Underlying Math</h1><!-- MathJax setup -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$', '$'] ]
+        }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<style>.MathJax_CHTML { font-size: 1.6em; }</style>
+
+<p>Trying to figure out the math of balancing these flow networks is what originally plunged me into this project.  The problem is deceivingly simple, which is why I originally thought I could just hack up some JavaScript to spit out the SankeyMATIC code for my personal use.  However, after several evenings after work spent on trying to develop a good algorithm, I realized it was a trickier problem than I had realized, so I decided to take a different approach.</p>
+<p>In college, I was briefly acquainted with <a href="https://en.wikipedia.org/wiki/Constraint_satisfaction" target="_blank" rel="noopener">constraint solvers</a>.  If you aren’t familiar with constraint solvers, they essentially just take a bunch of variables and constraints, and produce a set of values for the variables that satisfy the constraints.  After wrestling with the flow balancing problem for awhile, it became clear that a constraint solver (<a href="https://github.com/IjzerenHein/kiwi.js" target="_blank" rel="noopener">kiwi.js</a> in my case) would be a good tool for the job.</p>
+<p>But the whole reason I went down this rabbit hole was to develop an alternative to SankeyMATIC’s rigid and cumbersome language.  Just using a constraint solver wasn’t the answer, because specifying variables and constraints is <em>way more</em> cumbersome and difficult to read.  So instead, Budgeteer acts as a translator:</p>
+<p><img src="process-flow.svg" alt="Budgeteer process flow"></p>
+<p>This highlighted section above is where all the interesting stuff happens, so that’s what I’ll be talking about.</p>
+<h2 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h2><p>In constraint-solving land, everything is a variable.  This means that the amount of resources at each node gets its own variable, and the amounts transferred between it and every other node all get their own variables too… That’s a lotta variables.  To keep things straight, let’s setup some definitions:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$B_i$</td>
+<td>The numeric balance at node $i$</td>
+</tr>
+<tr>
+<td>$T^i_j$</td>
+<td>The numeric amount transferred from node $i$ to node $j$</td>
+</tr>
+<tr>
+<td>$C_i$</td>
+<td>The set of nodes that consume from node $i$</td>
+</tr>
+<tr>
+<td>$S_i$</td>
+<td>The set of nodes that give supply to node $i$</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Visual-Definitions"><a href="#Visual-Definitions" class="headerlink" title="Visual Definitions"></a>Visual Definitions</h3><p>If you prefer to think visually, this may help you:<br><!-- https://www.jmilne.org/not/Mamscd.pdf --><br>
+$$
+\require{AMScd}
+\begin{CD}
+    a @>{T^a_b}>> b\\
+    @V{T^a_c}VV @VV{T^b_d}V\\
+    c @>>{T^c_d}> d
+\end{CD}
+$$
+</p>
+<p>Given the previous information, the following statements would also be true:</p>
+
+$$
+S_a = \emptyset, C_a = \{b, c\}\\
+S_b = \{a\}, C_b = \{d\}\\
+S_c = \{a\}, C_c = \{d\}\\
+S_d = \{b, c\}, C_d = \emptyset
+$$
+
+<h2 id="Turning-Flows-into-Constraints"><a href="#Turning-Flows-into-Constraints" class="headerlink" title="Turning Flows into Constraints"></a>Turning Flows into Constraints</h2><p>With definitions out of the way, we can start to reason about how budgeteer code will translate to constraints.  For example, what does it mean to define a supply node, or a consumer, or a pipe with constraints?  Let’s start with supplies:</p>
+<h3 id="Creating-Supplies"><a href="#Creating-Supplies" class="headerlink" title="Creating Supplies"></a>Creating Supplies</h3><figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> x = <span class="hljs-number">1000</span>;</span><br><span class="line"><span class="hljs-keyword">let</span> s = supply(<span class="hljs-string">'Supply'</span>, x);</span><br></pre></td></tr></table></figure>
+<p>In the context of balancing budgets we want to make sure that our supply is not overdrawn, so our constraints will look like the following:</p>
+<p>$$B_s \geq 0, B_s = x - \sum_{i \in C_s} T^s_i$$</p>
+<p>This defines the balance for the supply, $s$, to be the initial amount, $x$, minus the sum of transfers to each node that consumes from the supply, additionally stipulating that it not dip below 0.  In other words, what the supply has left is what it started with minus the amount that the other nodes took from it.</p>
+<h3 id="Creating-Consumers"><a href="#Creating-Consumers" class="headerlink" title="Creating Consumers"></a>Creating Consumers</h3><figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> c = consumer(<span class="hljs-string">'Consumer'</span>);</span><br></pre></td></tr></table></figure>
+<p>The balance for a consumer is simply the sum of transfers coming in from its suppliers:</p>
+<p>$$B_c = \sum_{i \in S_c} T^i_c$$</p>
+<h3 id="Creating-Pipes"><a href="#Creating-Pipes" class="headerlink" title="Creating Pipes"></a>Creating Pipes</h3><figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> p = pipe(<span class="hljs-string">'Pipe'</span>);</span><br></pre></td></tr></table></figure>
+<p>Pipes have both suppliers and consumers.  In the context of balancing flows, we want the inputs and outputs to cancel out, which means we want the balance to be 0:</p>
+<p>$$B_p = 0, B_p = (\sum_{i \in S_p} T^i_p) - (\sum_{i \in C_p} T^p_i)$$</p>
+<p>This defines the balance for the pipe, $p$, to be the sum of transfers <em>from</em> each node that supplies it, minus the sum of transfers <em>to</em> each node that consumes from it, which should cancel out to 0.  In other words, the pipe should be given the same amount from its suppliers that it gives away to its consumers.</p>
+<h3 id="Transferring-a-Fixed-Amount"><a href="#Transferring-a-Fixed-Amount" class="headerlink" title="Transferring a Fixed Amount"></a>Transferring a Fixed Amount</h3><figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> s = supply(<span class="hljs-string">'Supply'</span>, <span class="hljs-number">1000</span>);</span><br><span class="line"><span class="hljs-keyword">let</span> c = consumer(<span class="hljs-string">'Consumer'</span>);</span><br><span class="line"><span class="hljs-keyword">let</span> x = <span class="hljs-number">500</span>;</span><br><span class="line"></span><br><span class="line">c.consumes(x).from(s);</span><br></pre></td></tr></table></figure>
+<p>With those constraints specified upfront, establishing relationships is actually pretty straightforward.</p>
+<p>$$s \in S_c, c \in C_s, T^s_c = x, T^s_c = -T^c_s$$</p>
+<p>Here we are just saying that $s$ is a supplier of $c$, $c$ is a consumer of $s$, and that the amount transferred between them is $x$.</p>
+<h3 id="Transferring-a-Variable-Amount"><a href="#Transferring-a-Variable-Amount" class="headerlink" title="Transferring a Variable Amount"></a>Transferring a Variable Amount</h3><figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> s = supply(<span class="hljs-string">'Supply'</span>, <span class="hljs-number">1000</span>);</span><br><span class="line"><span class="hljs-keyword">let</span> p = pipe(<span class="hljs-string">'Pipe'</span>);</span><br><span class="line"></span><br><span class="line">s.suppliesAsMuchAsPossible().to(p);</span><br><span class="line"><span class="hljs-comment">// or</span></span><br><span class="line">s.suppliesAsMuchAsNecessary().to(p);</span><br></pre></td></tr></table></figure>
+<p>Transferring a variable amount is nearly identical to transferring a fixed amount:</p>
+<p>$$s \in S_p, p \in C_s, T^s_p \geq 0, T^s_p = -T^p_s$$</p>
+<p>Since we don’t have a specific value, we just say that the transfer between the two nodes should be larger than 0.  However, you may be wondering what the difference between “as much as possible” and “as much as necessary” is then.</p>
+<p>The answer by using “weak constraints.”  So far, all the constraints we considered are absolutely required.  If the constraint solver can’t find a set of variables that satisfies every last constraint, it will throw an error.  However, you can also specify constraints that the solver will try its best to satisfy, but if it falls short it won’t throw an error.</p>
+<p>With this in mind, we can specify an additional “weak constraint” for the <code>suppliesAsMuchAsPossible</code> relationship:</p>
+<p>$$T^p_s = \infty$$</p>
+<p>Obviously, this can’t be satisfied, but it will cause the constraint solver to make $T^p_s$ as large as it possibly can without breaking the other constraints.  Likewise, we can specify the following weak constraint for the <code>suppliesAsMuchAsNecessary</code> relationship:</p>
+<p>$$T^p_s = 0$$</p>
+<p>Again, this can’t be satisfied, but it will cause the constraint solver to make $T^p_s$ as small as possible.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>That’s all of the math!  Here’s a summary of how the various pieces translate:</p>
+<table>
+<thead>
+<tr>
+<th>Budgeteer code</th>
+<th>Required constraints</th>
+<th>Weak Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>s = supply(..., x)</code></td>
+<td>$B_s \geq 0, B_s = x - \sum_{i \in C_s} T^s_i$</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>c = consumer(...)</code></td>
+<td>$B_c = \sum_{i \in S_c} T^i_c$</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>p = pipe(...)</code></td>
+<td>$B_p = 0, B_p = (\sum_{i \in S_p} T^i_p) - (\sum_{i \in C_p} T^p_i)$</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>c.consumes(x).from(s)</code></td>
+<td>$s \in S_c, c \in C_s, T^s_c = x, T^s_c = -T^c_s$</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>p.consumesAsMuchAsPossible().from(s)</code></td>
+<td>$s \in S_p, p \in C_s, T^s_p \geq 0, T^s_p = -T^p_s$</td>
+<td>$T^p_s = \infty$</td>
+</tr>
+<tr>
+<td><code>p.consumesAsMuchAsNecessary().from(s)</code></td>
+<td>(same as above)</td>
+<td>$T^p_s = 0$</td>
+</tr>
+</tbody>
+</table>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/javascript/">#javascript</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/typescript/">#typescript</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/math/">#math</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/budgeteer/">#budgeteer</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/">Using the NPM API to Get Latest Package Versions</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+<div class="sharebox">
+    
+</div>
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.tannernielsen.com/2019/06/25/Budgeteer-A-Budget-Balancing-Tool/';
+        this.page.identifier = '2019-06-25 23:01:34-&#34;Budgeteer - A Budget-Balancing Tool&#34;';
+        
+        this.language = 'en';
+        
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'tannern-blog' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Tanner Nielsen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/tannerntannern">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("en-AU");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+</script>
+
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+      })
+    </script>
+
+    
+    
+
+    
+
+
+<script src="/js/script.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+</body>
+</html>
