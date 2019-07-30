@@ -9,10 +9,9 @@ tags:
 
 {% asset_img "too-much-rainbow.gif" %}
 
-There are many packages for filling your Node.js terminal programs with pretty colors.  [chalk][1] is by far the most popular, but it may be too heavy for simple use cases.  See the table below for alternatives and how they compare.
+There are many packages for filling your Node.js terminal programs with pretty colors.  [chalk](https://www.npmjs.com/package/chalk) is by far the most popular, but it may be too heavy for simple use cases.  You may find some of these alternatives to be useful:
 
 <!-- more -->
-
 
 ## Comparison
 {% raw %}
@@ -29,12 +28,12 @@ There are many packages for filling your Node.js terminal programs with pretty c
 </table>
 <script>
 var packages = [
-    'cli-color',
-    'chalk',
-    'ansi-styles',
-    'colors',
-    'colors-cli',
     'kleur',
+    'colors-cli',
+    'colors',
+    'ansi-styles',
+    'chalk',
+    'cli-color',
 ];
 var links = [
     function(pkg){
@@ -64,28 +63,3 @@ function makeRow(package) {
 packages.forEach(makeRow);
 </script>
 {% endraw %}
-
-[1]: https://www.npmjs.com/package.chalk
-[2]: https://badgen.net/bundlephobia/min/chalk
-[3]: https://bundlephobia.com/result?p=chalk
-[4]: https://badgen.net/npm/dm/chalk
-
-[5]: https://www.npmjs.com/package/ansi-styles
-[6]: https://badgen.net/bundlephobia/min/ansi-styles
-[7]: https://bundlephobia.com/result?p=ansi-styles
-[8]: https://badgen.net/npm/dm/ansi-styles
-
-[9]: https://www.npmjs.com/package/colors
-[10]: https://badgen.net/bundlephobia/min/colors
-[11]: https://bundlephobia.com/result?p=colors
-[12]: https://badgen.net/npm/dm/colors
-
-[13]: https://www.npmjs.com/package/cli-color
-[14]: https://badgen.net/bundlephobia/min/cli-color
-[15]: https://bundlephobia.com/result?p=cli-color
-[16]: https://badgen.net/npm/dm/cli-color
-
-[17]: https://www.npmjs.com/package/kleur
-[18]: https://badgen.net/bundlephobia/min/kleur
-[19]: https://bundlephobia.com/result?p=kleur
-[20]: https://badgen.net/npm/dm/kleur
