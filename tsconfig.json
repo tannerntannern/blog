@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+	"target": "es5",
+	"lib": ["dom", "es6"],
+	"esModuleInterop": true,
+	"allowSyntheticDefaultImports": true,
+	"jsx": "react"
+  },
+  "include": [
+	"content/**/*.ts",
+	"content/**/*.tsx"
+  ]
+}

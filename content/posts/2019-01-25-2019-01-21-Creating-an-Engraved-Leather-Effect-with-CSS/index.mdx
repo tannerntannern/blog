@@ -1,43 +1,37 @@
 ---
 title: Creating an Engraved Leather Effect with CSS
+date: 2019-01-25
 disqusId: '2019-01-26 00:27:51-"Creating an Engraved Leather Effect with CSS"'
 tags:
   - css
   - tutorial
-date: 2019-01-25 18:27:51
+banner: ./enticer.png
 ---
 
-
-<link rel="stylesheet" href="/assets/extra.css">
-
-{% asset_img "enticer.png" %}
+![Enticer](enticer.png)
 
 I love the look of gold-engraved leather.  You see it all the time on portfolios, diplomas, etc., and I think the reason is because it really does have a universal appeal.  However, you don't see it so often on the web.  Perhaps it just doesn't fit with the flat style that dominates the internet.  Or maybe (most likely) it's because the effect cannot easily be pulled off in CSS.
-
-<!-- more -->
 
 Traditionally, if you wanted to include something like the above image on your website, you'd be forced to create it with Photoshop or other external software, then include the image in the HMTL.  If you ever want to change the text, resize or change the font, you would have to create it all again.  Additionally, you probably need to keep track of multiple sizes and layouts for different display sizes...  Not worth the hassle unless you _really_ need the effect.
 
 So what can a poor developer do?  Luckily, with a few CSS tricks and clever texturing, there is in fact a way to mimic this lovely style yourself, without sacrificing flexibility!  And:
 
 * It works with _any_ text (even emojis to an extent 😲)
-* It work with _any_ font (including [Font Awesome](https://fontawesome.com/), or a similar font-based icon system <i class="fas fa-thumbs-up"></i>)
+* It work with _any_ font (including [Font Awesome](https://fontawesome.com/), or a similar font-based icon system)
 * Both the text and font can change on the fly without messing up the effect
 
 Today, I will walk you through my process so you can create the effect on your own, and I'll even give away the special Blender-made textures at the end of the article.  It's a bumpy road ahead, but hopefully you find something useful along the way.
 
-## Breaking it down: How does it work?	
+## Breaking it down: How does it work?
 Before we can get to work, we need to briefly break down how the effect is pulled off.  There are several key pieces to note:
 
-1.  [Normal mapping](https://en.wikipedia.org/wiki/Normal_mapping) on the gold texture (the one part that must be pre-made) makes it look as though the gold is "painted" directly on the leather.  Without this effect, the gold just looks wrong. 
+1.  [Normal mapping](https://en.wikipedia.org/wiki/Normal_mapping) on the gold texture (the one part that must be pre-made) makes it look as though the gold is "painted" directly on the leather.  Without this effect, the gold just looks wrong.
 2.  [`background-clip: text`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip) allows us to clip the gold texture to the shape of the text.
 3.  Multiple `text-shadow`s create the illusion that the text has been pressed into the leather.
 
 I will walk through these effects in the above order, starting with the normal mapping, which is by far the trickiest.
 
-{% colorquote warning %}
-If you don't know what a normal map is, <a href="https://www.youtube.com/results?search_query=normal+maps+explained">a YouTube search</a> can probably answer most of your questions.  All you really need to know is that they help 3D software render lighting for geometrically complex surfaces.
-{% endcolorquote %}
+> If you don't know what a normal map is, [a YouTube search](https://www.youtube.com/results?search_query=normal+maps+explained) can probably answer most of your questions.  All you really need to know is that they help 3D software render lighting for geometrically complex surfaces.
 
 ## Step 1 - Creating the Textures
 Our first goal is to create leather and gold textures that looks a bit like this:
@@ -46,9 +40,7 @@ Our first goal is to create leather and gold textures that looks a bit like this
 
 We will not be creating the actual letters in this step, but notice how the gold is clearly "painted" on to the existing bumps and crevices.  We will be using [Blender](https://www.blender.org/) achieve this effect.
 
-{% colorquote info %}
-If you do not want to go through the hassle of creating your own textures, you can skip sections 1.1 - 1.7, as I will be giving away my textures at the end of the article.  However, if you wanted to go for a slightly different effect, such black text on brown leather, or even red paint on concrete, these steps will be very helpful for you.
-{% endcolorquote %}
+> If you do not want to go through the hassle of creating your own textures, you can skip sections 1.1 - 1.7, as I will be giving away my textures at the end of the article.  However, if you wanted to go for a slightly different effect, such black text on brown leather, or even red paint on concrete, these steps will be very helpful for you.
 
 ### Step 1.1 - Get Blender
 First, you'll want to be sure you have [Blender](https://www.blender.org/download/) installed AND that you have **version 2.79b or later**.  This version has new features that we'll need.
@@ -58,9 +50,7 @@ Next, you need to find a seamless leather texture along with its matching normal
 
 Luckily, it had the [kind of leather I was looking for](http://www.texturise.club/2013/12/seamless-black-leather-texture-maps.html).  Go ahead and download the diffuse and normal texture.  You can also download the specular texture if you wish.
 
-{% colorquote info %}
-If you have your own texture and need a normal map for it, there are a number of tools that can generate one for you, <a href="http://cpetry.github.io/NormalMap-Online/">some online</a> and <a href="http://www.crazybump.com/">some for desktop use</a>.  However, you'll want to know what you're doing for these and they're outside the scope of this tutorial.
-{% endcolorquote %}
+> If you have your own texture and need a normal map for it, there are a number of tools that can generate one for you, [some online](http://cpetry.github.io/NormalMap-Online/) and [some for desktop use](http://www.crazybump.com/).  However, you'll want to know what you're doing for these and they're outside the scope of this tutorial.
 
 ### Step 1.3 - Setup the Geometry
 Now we can open Blender and start preparing our textures.  This article will assume basic knowledge of Blender, but I will make an effort to be very clear about what I'm doing.
@@ -74,17 +64,13 @@ Next, let's add a simple directional light to the scene.  In the main view, add 
 ### Step 1.4 - Setup the Leather Material
 Now we need to create and setup a material for our plane that will utilize the leather texture we downloaded earlier.  But before we mess with any materials, we want to make sure Blender is set to "Cycles Render" rather than "Blender Render" (top of the screen).
 
-{% colorquote info %}
 If you need any help with the following steps, refer to this excellent video, which is where I got most of my information.  It's a bit long, so I would only refer to it if you run into issues.
-<br><br>
+
 <div style="text-align: center;">
-{% youtube aH6XPsEmozk %}
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/aH6XPsEmozk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-{% endcolorquote %}
 
-Then, collapse the left-hand panel (<kbd>t</kbd>) to make more room, then split the main view by clicking and dragging to the left from the upper right-hand corner:
-
-![Splitting the view](blender2.gif)
+Then, collapse the left-hand panel (<kbd>t</kbd>) to make more room, then split the main view by clicking and dragging to the left from the upper right-hand corner.
 
 Before we can apply our leather textures, we need to UV-unwrap our plane.  This simply allows our textures to be mapped to the 3D geometry, which in our case is just a simple plane.  First, in the new right-hand view, change the type to "UV/Image Editor" in the bottom left.  The view should be blank at the moment.  Then, in the left-hand 3D view, select the plane (right-click) and hit <kbd>tab</kbd> to enter edit mode.  Then hit <kbd>u</kbd> and select "Unwrap" to UV-unwrap our plane.  If all works properly, you should see the UV coordinates in the UV/Image Editor now:
 
@@ -115,15 +101,13 @@ If you have a specular map as well, you can add (<kbd>shift</kbd> + <kbd>a</kbd>
 ### Step 1.5 - Bake the Composite Leather Texture
 Now that we have a model of what our leather should look like in 3D space with 3D lighting, we can "bake" the result to another texture that we can use in HTML.
 
-{% colorquote info %}
 If you need any help with the following steps, refer to this video, which covers the basics of Cycles baking.  Again, it's long, so I would only refer to it if you run into issues.
-<br><br>
-<div style="text-align: center;">
-{% youtube sB09T--_ZvU %}
-</div>
-{% endcolorquote %}
 
-Let's start by switching our left-hand view to "UV/Image Editor."  Then click the big "New" button at the bottom to create a new image for our texture to be baked onto.  Make sure the image is the same dimensions as the original textures, and uncheck alpha, because we won't need it:  
+<div style="text-align: center;">
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/sB09T--_ZvU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+Let's start by switching our left-hand view to "UV/Image Editor."  Then click the big "New" button at the bottom to create a new image for our texture to be baked onto.  Make sure the image is the same dimensions as the original textures, and uncheck alpha, because we won't need it:
 
 ![Creating a target for the baking](blender9.png)
 
@@ -210,7 +194,7 @@ This simply sets the background to the leather texture we created and gives us a
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  
+
   font-size: 70pt;
 }
 ```
@@ -285,7 +269,7 @@ The `::after` element will serve as the gold text element:
   position: absolute;
   left: 0;
   top: 0;
-  
+
   background-position: inherit;
   background-size: inherit;
   background-image: url(gold-texture.png);
@@ -299,7 +283,7 @@ Here the background-image stuff is the same as before, only now we get our text 
 
 And that's it!  You can check out the results in this Fiddle:
 
-<script async src="//jsfiddle.net/tannerntannern/3xr8mLf6/embed/html,css,result/"></script>
+<iframe width="100%" height="300" src="//jsfiddle.net/tannerntannern/3xr8mLf6/embedded/html,css,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ## Conclusion
 There you have it!  Hopefully this article was insightful, and perhaps you can build upon these techniques to do other effects as well.

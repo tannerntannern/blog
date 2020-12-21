@@ -1,10 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "gatsby": "gatsby.cmd"
+    "gatsby": "gatsby.cmd",
+    "build": "gatsby.cmd build",
+    "dev": "gatsby.cmd develop"
   },
   "dependencies": {
+    "@lekoarts/gatsby-theme-minimal-blog": "^2.7.5",
     "gatsby": "^2.29.1",
+    "gatsby-plugin-google-analytics": "^2.8.0",
+    "gatsby-plugin-sitemap": "^2.9.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
