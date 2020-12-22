@@ -3,17 +3,17 @@
   "scripts": {
     "gatsby": "gatsby.cmd",
     "build": "gatsby.cmd build",
-    "dev": "gatsby.cmd develop"
+    "dev": "gatsby.cmd develop",
+    "clean": "gatsby.cmd clean"
   },
   "dependencies": {
-    "@lekoarts/gatsby-theme-minimal-blog": "^2.7.5",
-    "gatsby": "^2.29.1",
-    "gatsby-plugin-google-analytics": "^2.8.0",
-    "gatsby-plugin-sitemap": "^2.9.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "@narative/gatsby-theme-novela": "^0.*",
+    "gatsby": "^2.13.41",
+    "gatsby-plugin-manifest": "^2.2.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "gatsby-cli": "^2.16.1"
+    "@types/react": "^16.8.6"
   }
 }

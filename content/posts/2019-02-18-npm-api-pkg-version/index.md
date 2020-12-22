@@ -1,13 +1,14 @@
 ---
 title: Using the NPM API to Get Latest Package Versions
+author: Tanner Nielsen
 date: 2019-02-18
+hero: ./promo.jpg
 disqusId: '2019-02-18 22:04:25-"Using the NPM API to Get Latest Package Versions"'
+slug: /2019/02/18/Using-the-NPM-API-to-Get-Latest-Package-Versions/
 tags:
-	- javascript
-	- npm
+- javascript
+- npm
 ---
-
-![Promo](promo.jpg)
 
 The official npm API provides a simple way to programmatically retrieve the latest version of any package, along with other metadata you might find in the `package.json`.  This has a variety of use cases, such as checking when a package is out of date, to name one example.  Today I'll demonstrate how to get the latest version of a package with only a few lines of code.  However, I was frustrated with what I found in other solutions, so I also want to talk about those and why you shouldn't use them.
 
@@ -45,3 +46,4 @@ const packageVersion = await latestVersion('some-package');
 
 ## Conclusion
 I hope this saved you some unnecessary code bloat.  If you want to see how other packages will affect your bundle size in the future, you can check for yourself at [bundlephobia.com](https://bundlephobia.com).
+

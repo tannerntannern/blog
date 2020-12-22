@@ -1,14 +1,14 @@
 ---
 title: Creating an Engraved Leather Effect with CSS
+author: Tanner Nielsen
 date: 2019-01-25
+hero: ./enticer.png
 disqusId: '2019-01-26 00:27:51-"Creating an Engraved Leather Effect with CSS"'
+slug: /2019/01/25/2019-01-21-Creating-an-Engraved-Leather-Effect-with-CSS/
 tags:
-  - css
-  - tutorial
-banner: ./enticer.png
+- css
+- tutorial
 ---
-
-![Enticer](enticer.png)
 
 I love the look of gold-engraved leather.  You see it all the time on portfolios, diplomas, etc., and I think the reason is because it really does have a universal appeal.  However, you don't see it so often on the web.  Perhaps it just doesn't fit with the flat style that dominates the internet.  Or maybe (most likely) it's because the effect cannot easily be pulled off in CSS.
 
@@ -70,7 +70,8 @@ If you need any help with the following steps, refer to this excellent video, wh
 	<iframe width="560" height="315" src="https://www.youtube.com/embed/aH6XPsEmozk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-Then, collapse the left-hand panel (<kbd>t</kbd>) to make more room, then split the main view by clicking and dragging to the left from the upper right-hand corner.
+Then, collapse the left-hand panel (<kbd>t</kbd>) to make more room, then split the main view by clicking and dragging to the left from the upper right-hand corner:
+![Split view demo](blender2.gif)
 
 Before we can apply our leather textures, we need to UV-unwrap our plane.  This simply allows our textures to be mapped to the 3D geometry, which in our case is just a simple plane.  First, in the new right-hand view, change the type to "UV/Image Editor" in the bottom left.  The view should be blank at the moment.  Then, in the left-hand 3D view, select the plane (right-click) and hit <kbd>tab</kbd> to enter edit mode.  Then hit <kbd>u</kbd> and select "Unwrap" to UV-unwrap our plane.  If all works properly, you should see the UV coordinates in the UV/Image Editor now:
 

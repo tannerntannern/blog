@@ -1,0 +1,42 @@
+---
+title: Node.js Terminal Styling Packages Compared
+author: Tanner Nielsen
+date: 2019-07-28
+disqusId: '2019-07-28 15:42:07-"Node.js Terminal Styling Packages Compared"'
+tags:
+- javascript
+- npm
+---
+
+There are many packages for filling your Node.js terminal programs with pretty colors.  [chalk](https://www.npmjs.com/package/chalk) is by far the most popular, but it may be too heavy for simple use cases.  You may find some of these alternatives to be useful:
+
+## Comparison
+import { PkgLink, PkgSize, PkgDownloads, PkgDependents } from './comparison-table';
+
+<table>
+	<thead>
+		<tr>
+			<th>Package</th>
+			<th>Size</th>
+			<th>Popularity</th>
+			<th>Dependents</th>
+		</tr>
+	</thead>
+	<tbody>{
+		[
+			'kleur',
+			'colors-cli',
+			'colors',
+			'ansi-styles',
+			'chalk',
+			'cli-color',
+		].map(pkg => (
+			<tr>
+				<td><PkgLink pkg={pkg}/></td>
+				<td><PkgSize pkg={pkg}/></td>
+				<td><PkgDownloads pkg={pkg}/></td>
+				<td><PkgDependents pkg={pkg}/></td>
+			</tr>
+		))
+	}</tbody>
+</table>
