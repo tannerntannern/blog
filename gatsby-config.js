@@ -1,13 +1,14 @@
 const siteName = `Tanner's Blog`;
+const description = `Articles about programming, DIY projects, music, and more`;
 
 module.exports = {
   siteMetadata: {
     title: siteName,
     name: siteName,
     siteUrl: `https://blog.tannernielsen.com`,
-    description: `Articles about programming, DIY projects, music, and more`,
+    description: description,
     hero: {
-      heading: `Welcome to Tanner's Blog, articles about programming, DIY projects, music, and more.`,
+      heading: `Welcome to ${siteName}: ${description}`,
       maxWidth: 1000,
     },
     social: [

@@ -14,3 +14,15 @@ kbd {
 	padding: 2px 4px;
 	white-space: nowrap;
 }
+
+/**
+ * Hacky MathJax styling fixes
+ */
+.react-mathjax-preview-result {
+	font-size: 1.5em;
+	display: inline;
+}
+
+.MathJax_Display {
+	margin-top: 0 !important;
+}
