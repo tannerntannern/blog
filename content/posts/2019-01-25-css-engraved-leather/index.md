@@ -166,7 +166,7 @@ Finally, to get the aspect ratio correct, head over to the Render tab and adjust
 
 If you want to get a rough idea of what the final render will look like, hit <kbd>0</kbd> on the numpad to snap the viewport to the camera's perspective, and hit <kbd>shift</kbd> + <kbd>z</kbd> to preview the render.  You may find that at this angle, you will have to re-adjust the gold material parameters from before.  Be sure to adjust based on this view because this is the one that will be rendered!
 
-Once you are happy with how it looks, you can hit the big render button and go grab a coffee or something -- it will take awhile.  Once it's done, you can save the image to a file like we did with the leather texture (and don't forget to save! Blender will not save the render if you close out).  If all goes well, you should have a leather texture that looks a bit like this:
+Once you are happy with how it looks, you can hit the big render button and go grab a coffee or something -- it will take awhile.  Once it's done, you can save the image to a file like we did with the leather texture (and don't forget to save! Blender will not save the render if you close out).  If all goes well, you should have a gold texture that looks a bit like this:
 
 ![Baked gold texture](gold-texture-bake.png)
 

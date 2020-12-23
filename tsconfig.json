@@ -8,6 +8,8 @@
   },
   "include": [
 	"content/**/*.ts",
-	"content/**/*.tsx"
+	"content/**/*.tsx",
+	"src/**/*.ts",
+	"src/**/*.tsx"
   ]
 }
