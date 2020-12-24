@@ -16,13 +16,8 @@ kbd {
 }
 
 /**
- * Hacky MathJax styling fixes
+ * KaTeX styling
  */
-.react-mathjax-preview-result {
-	font-size: 1.5em;
-	display: inline;
-}
-
-.MathJax_Display {
-	margin-top: 0 !important;
+.katex-html .base {
+	font-size: 1.4em;
 }

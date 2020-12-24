@@ -1,6 +1,8 @@
 const siteName = `Tanner's Blog`;
 const description = `Articles about programming, DIY projects, music, and more`;
 
+const novelaThemeConfig = require('@narative/gatsby-theme-novela/gatsby-config');
+
 module.exports = {
   siteMetadata: {
     title: siteName,
@@ -28,7 +30,6 @@ module.exports = {
         authorsPage: true,
         sources: {
           local: true,
-          // contentful: true,
         },
       },
     },
