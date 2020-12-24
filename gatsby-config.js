@@ -31,6 +31,7 @@ module.exports = {
         sources: {
           local: true,
         },
+        articlePermalinkFormat: ':year/:month/:day/:slug',
       },
     },
     {
@@ -45,5 +46,6 @@ module.exports = {
         icon: `src/assets/favicon.png`,
       },
     },
+    'gatsby-plugin-meta-redirect', // make sure this is always the last one
   ],
 };

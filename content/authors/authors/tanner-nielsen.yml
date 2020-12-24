@@ -3,5 +3,8 @@ bio: |
   Midwest-based software engineer and amateur musician
 avatar: ./avatars/tanner-nielsen.jpg
 social:
-  - url: https://github.com
+  - name: github
+    url: https://github.com/tannerntannern
+  - name: url
+    url: https://tannernielsen.com
 featured: true
