@@ -46,6 +46,7 @@ module.exports = {
         icon: `src/assets/favicon.png`,
       },
     },
+    `gatsby-plugin-fixhash`,
     'gatsby-plugin-meta-redirect', // make sure this is always the last one
   ],
 };

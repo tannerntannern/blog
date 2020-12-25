@@ -7358,6 +7358,11 @@ gatsby-plugin-feed@2.3.7:
     lodash.merge "^4.6.2"
     rss "^1.2.2"
 
+gatsby-plugin-fixhash@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-fixhash/-/gatsby-plugin-fixhash-0.0.4.tgz#fb1d6d67bb28d3a36abea6f4e6be8d9e54cbcec3"
+  integrity sha512-cDzXj8gKSL3fQoP+5Jx5ozHKQl3lcvaCc9I5/t6ips2Kinn4jLmLFURAdFKMY/VPVrs7uqsMd/x7tf1C4azodQ==
+
 gatsby-plugin-mailchimp@^5.1.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-mailchimp/-/gatsby-plugin-mailchimp-5.2.2.tgz#bed94cb70b9d91267329a5e6a0220e821d8ff6e8"
