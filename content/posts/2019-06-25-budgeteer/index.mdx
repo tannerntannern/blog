@@ -10,6 +10,8 @@ tags:
 - math
 ---
 
+import Admonition from '../../../src/components/admonition';
+
 You can gain some useful insights by visualizing your budget, but creating a chart like the one above this isn't always worth the effort.  That's why I created a tool called [Budgeteer][3] that makes it easy make these charts without tedious work.  In this post, I'd like to talk a little bit about how to use the tool as well as some of the math behind it.
 
 * [Click here](#using-the-budgeteer-website) if you just want to learn how to use the tool
@@ -50,7 +52,9 @@ This "leftovers" feature would be very nice for making complicated flows.  Calcu
 ## Enter Budgeteer
 In a nutshell, this more expressive syntax and auto-calculated differences is what [Budgeteer][3] provides.  Budgeteer does not replace SankeyMATIC, but rather builds directly on top of it; it acts as a middleman, translating a more expressive JavaScript-based API into the code that SankeyMATIC understands.
 
-> Technically, [Budgeteer is a separate, standalone TypeScript package][1] that can operate outside of SankeyMATIC, but it can only be used programmatically.  [Budgeteer + SankeyMATIC][3] is the website that integrates it into a graphical tool like SankeyMATIC.  See the [repository for the website][2] if you want to learn more.
+<Admonition type="info">
+Technically, <a href="https://github.com/tannerntannern/budgeteer">Budgeteer is a separate, standalone TypeScript package</a> that can operate outside of SankeyMATIC, but it can only be used programmatically. <a href="https://budgeteer.tannernielsen.com">Budgeteer + SankeyMATIC</a> is the website that integrates it into a graphical tool like SankeyMATIC.  See the <a href="https://github.com/tannerntannern/budgeteer-sankeymatic">repository for the website</a> if you want to learn more.
+</Admonition>
 
 With that lengthy intro out of the way, let's jump into using the [Budgeteer Website][3]!
 
@@ -76,7 +80,9 @@ Nodes that can consume from other nodes (and thus receive supply) are called _su
 
 This means (somewhat confusingly) that **supply** nodes are _consumable_, **consumer** nodes are _supplyable_, and **pipe** nodes are both consumable _and_ supplyable.
 
-> Knowing this terminology isn't required for using the tool, but may be helpful if you start digging into the technical side of the API.
+<Admonition type="info">
+Knowing this terminology isn't required for using the tool, but may be helpful if you start digging into the technical side of the API.
+</Admonition>
 
 ### Node Relationships
 There are three types of relationships a node can establish with another:
