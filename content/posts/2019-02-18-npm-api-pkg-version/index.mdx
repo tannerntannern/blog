@@ -10,7 +10,7 @@ tags:
 
 The official npm API provides a simple way to programmatically retrieve the latest version of any package, along with other metadata you might find in the `package.json`.  This has a variety of use cases, such as checking when a package is out of date, to name one example.  Today I'll demonstrate how to get the latest version of a package with only a few lines of code.  However, I was frustrated with what I found in other solutions, so I also want to talk about those and why you shouldn't use them.
 
-A very popular way to get the latest version is through the [latest-version](https://www.npmjs.com/package/latest-version) package on npm, which has nearly [3 million weekly downloads](https://www.npmtrends.com/latest-version).  The package sports a shiny ![build passing](https://badgen.net/badge/build/passing/green) badge (so you know it's good), and the README even tells you why you should choose this package over the [latest](https://www.npmjs.com/package/latest) package, which has "massive" dependencies.  The code example also looks pretty slick:
+A very popular way to get the latest version is through the [latest-version](https://www.npmjs.com/package/latest-version) package on npm, which has nearly [3 million weekly downloads](https://www.npmtrends.com/latest-version).  The package sports a shiny ![build passing](passing.svg) badge (so you know it's good), and the README even tells you why you should choose this package over the [latest](https://www.npmjs.com/package/latest) package, which has "massive" dependencies.  The code example also looks pretty slick:
 
 ```javascript
 console.log(await latestVersion('ava'));
