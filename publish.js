@@ -7,4 +7,3 @@ ghPages.publish('public', {
 }, err => {
 	console.error(err);
 });
-console.info('Publish complete!');
