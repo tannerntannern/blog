@@ -4,7 +4,8 @@
     "gatsby": "gatsby.cmd",
     "build": "gatsby.cmd build",
     "dev": "gatsby.cmd develop",
-    "clean": "gatsby.cmd clean"
+    "clean": "gatsby.cmd clean",
+    "publish": "yarn clean && yarn build && node publish.js"
   },
   "dependencies": {
     "@narative/gatsby-theme-novela": "^0.*",
