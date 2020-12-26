@@ -22,7 +22,7 @@ module.exports.createPages = async ({ actions }) => {
 		createRedirect({
 			fromPath: oldPath,
 			toPath: newPath,
-			isPermanent: true,
+			isPermanent: false,
 		});
 	}
 };
