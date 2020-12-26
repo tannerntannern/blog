@@ -23,6 +23,7 @@ module.exports.createPages = async ({ actions }) => {
 			fromPath: oldPath,
 			toPath: newPath,
 			isPermanent: false,
+			redirectInBrowser: true,
 		});
 	}
 };
