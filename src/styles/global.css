@@ -21,3 +21,10 @@ kbd {
 .katex-html .base {
 	font-size: 1.4em;
 }
+
+/**
+ * List styling fixes
+ */
+li > ul,ol {
+	padding-bottom: 0 !important;
+}

@@ -57,7 +57,7 @@ export default (props: AdmonitionProps) => {
 	const { color, backgroundColor, Icon } = admonitionTypes[type];
 	const paragraphStyle: CSSProperties = {
 		position: 'relative',
-		paddingLeft: '1.0em',
+		paddingLeft: '1.2em',
 		paddingTop: '0.8em',
 		paddingBottom: '0.8em',
 		paddingRight: '0.8em',

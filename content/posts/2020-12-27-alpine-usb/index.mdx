@@ -9,6 +9,8 @@ tags:
  - usb
 ---
 
+import Admonition from '../../../src/components/admonition';
+
 Bootable USBs are useful to have around and relatively easy to make.  Some USBs are "live," meaning they are a clean slate every time you boot in, and others have "persistence," meaning changes you make will remain when you boot in next time.  [Rufus](https://rufus.ie/) is a useful tool for creating both kinds of these USBs.  However, if you want persistence on less common Linux distributions, [Rufus may not be able to help you](https://github.com/pbatard/rufus/issues/1570).
 
 While you _can_ add persistence to a live USB after it has been created, it requires lots of futzing in a terminal and may be too daunting of a task for non-linux-experts (myself included).  In this article I'll show you a simpler way to make a persistent Alpine Linux bootable USB.
@@ -16,10 +18,35 @@ While you _can_ add persistence to a live USB after it has been created, it requ
 # Prerequisites
 * Familiarity with terminal interfaces and common Linux commands
 * A Windows machine
+* 2 free USB ports (important because we need to use both at the same time)
 * 2 USB drives
 	- One will serve as our persistent bootable USB
 	- The other will be a temporary live USB used to install Alpine Linux onto the first USB
-	- Not mandatory, but it will be helpful if the 2 USBs have different storage capacities (makes it easier to distinguish between them in the terminal)
+	- It's not necessary, but it's helpful if the drives have different storage capacities to make them easier to distinguish in the terminal
 
-# Preparing the Drives
-TODO...
+<Admonition type="warning">
+	Note that several steps in this article have potential to erase valuable data and/or put your computer in an unusable state if followed incorrectly. Please follow instructions carefully and use good judgement. I do not take any responsibility if you wreck your computer.
+</Admonition>
+
+# Preparing the Live USB
+First, we'll need to download a few things:
+* [Rufus](https://rufus.ie/). I prefer the portable version, but any version should work fine.
+* An Alpine Linux ISO file. [I got mine here.](https://alpinelinux.org/downloads/) If you are unsure which variant to get, Standard x86_64 is probably the way to go.
+
+Next plug in the USB drive you intend to use as the temporary live USB (_not_ the one you plan to use as the persistent USB). Ensure that Windows recognizes the drive and there's nothing on the drive you care about losing (because it will be erased).
+
+Now start up Rufus and set the following configurations:
+![Rufus screenshot](rufus-settings.png)
+* **Device** - The USB drive for the temporary live Alpine installation (mine is called `DURACELL (E:)`)
+* **Boot selection** - The Alpine ISO file you downloaded earlier (mine is version 3.12, but yours may be newer)
+* **Persistent partition size** - Set to 0 (this is going to be live USB)
+* **Partition scheme** - Set to GPT
+* **Volume label** - Not required, but helpful so you remember what the USB drive is later
+* **File system** - Set to FAT32
+
+All other defaults should be fine. Triple check that you've selected the correct USB device, then when you're ready click the "START" button.  The process will take a few minutes.  If all goes well, you now have a live (non-persistent) Alpine Linux Bootable USB!
+
+# Preparing the Persistent USB
+With our live USB prepared, we can now make the persistent USB. First, completely shutdown your Windows machine (hold <kbd>shift</kbd> while clicking through the shutdown menu). While the machine is off, insert both the live USB we just prepared, and the persistent USB we are going to prepare.  Now power on the machine and enter the BIOS menu.  Note this process is different for every machine, so you'll need to find instructions specific to your computer.
+
+In the BIOS menu, locate the live USB and boot into it. If you have many boot devices this may be tricky, but mine was called "Linpus Lite".
