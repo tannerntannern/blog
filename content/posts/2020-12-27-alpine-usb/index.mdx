@@ -1,0 +1,25 @@
+---
+title: How to Make an Alpine Linux Bootable USB With Persistence
+author: Tanner Nielsen
+date: 2020-12-27
+hero: ./hero.jpg
+tags:
+ - linux
+ - tutorial
+ - usb
+---
+
+Bootable USBs are useful to have around and relatively easy to make.  Some USBs are "live," meaning they are a clean slate every time you boot in, and others have "persistence," meaning changes you make will remain when you boot in next time.  [Rufus](https://rufus.ie/) is a useful tool for creating both kinds of these USBs.  However, if you want persistence on less common Linux distributions, [Rufus may not be able to help you](https://github.com/pbatard/rufus/issues/1570).
+
+While you _can_ add persistence to a live USB after it has been created, it requires lots of futzing in a terminal and may be too daunting of a task for non-linux-experts (myself included).  In this article I'll show you a simpler way to make a persistent Alpine Linux bootable USB.
+
+# Prerequisites
+* Familiarity with terminal interfaces and common Linux commands
+* A Windows machine
+* 2 USB drives
+	- One will serve as our persistent bootable USB
+	- The other will be a temporary live USB used to install Alpine Linux onto the first USB
+	- Not mandatory, but it will be helpful if the 2 USBs have different storage capacities (makes it easier to distinguish between them in the terminal)
+
+# Preparing the Drives
+TODO...
